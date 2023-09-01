@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import headerLogo from '../../images/header-logo.svg';
 
 function Register() {
@@ -22,7 +23,7 @@ function Register() {
         <button className="login__button" type="submit">Зарегистрироваться</button>
       </form>
       <p className="login__link">Уже зарегистрированы?
-      <a className="login__link-src" href="#">Войти</a></p>
+      <Link to={"/signin"} className="login__link-src" href="#">Войти</Link></p>
     </section>
   );
 }

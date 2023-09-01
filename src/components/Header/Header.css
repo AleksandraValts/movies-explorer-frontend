@@ -7,6 +7,10 @@
     max-width: 1280px;
 }
 
+.header__main {
+    background-color: rgba(7, 48, 66, 1);
+}
+
 .header__logo {
     max-width: 38px;
     padding-top: 18px;
@@ -41,6 +45,7 @@
     margin-left: 20px;
     color: rgba(255, 255, 255, 1);
     transition: opacity 0.3s linear;
+    text-decoration: none;
 }
 
 .header__films-list:hover {
@@ -65,10 +70,19 @@
 }
 
 .header__logo-acc {
-    max-width: 30px;
-    height: 30px;
+    max-width: 10px;
+    height: 10px;
     margin-left: 13px;
     margin-right: 70px;
+    background-color: rgba(49, 49, 49, 1);
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.header__logo-acc-main {
+    background-color: rgba(15, 65, 87, 1);
 }
 
 .header__button {

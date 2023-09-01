@@ -61,7 +61,7 @@
 .login__input {
     width: 100%;
     color: #FFFFFF;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
     background-color: transparent;
     border: 0;
     border-bottom: 1px solid rgba(66, 66, 66, 1);
@@ -96,7 +96,7 @@
     margin: 0;
     max-width: 396px;
     color: rgba(139, 139, 139, 1);
-    padding-top: 14px;
+    padding-top: 10px;
     padding-bottom: 5px;
 }
 
@@ -118,4 +118,37 @@
 
 .login__input-active {
     color: red;
+}
+
+@media screen and (max-width: 450px) {
+    .login {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 56px;
+    }
+
+    .login__icon {
+        margin-bottom: 50px;
+    }
+
+    .login__title {
+        margin-bottom: 70px;
+        text-align: center;
+    }
+
+    .login__form {
+        width: 260px;
+    }
+
+    .login__button {
+        margin-top: 221px;
+        font-size: 12px;
+        line-height: 14.52px;
+    }
+
+    .login__link {
+        font-size: 12px;
+        line-height: 14.52px;
+    }
 }

@@ -1,0 +1,9 @@
+.log__button {
+    margin-top: 206px;
+}
+
+@media screen and (max-width: 450px) {
+    .log__button {
+        margin-top: 292px;
+    }
+}

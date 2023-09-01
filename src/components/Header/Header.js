@@ -1,30 +1,46 @@
 import headerLogo from '../../images/header-logo.svg';
-import headerAccount from '../../images/header-logo-acc.png';
+import headerAccount from '../../images/header-icon.svg';
 import { Link } from 'react-router-dom';
+import Popup from '../Popup/Popup.js';
 
-function Header() {
+function Header(props) {
+
+  // временный функционал для проверки работы верстки
+  function openMenuPopup() {
+    const popup = document.querySelector('.popup');
+    popup.classList.add('popup_opened');
+  }
+
+  function closeMenuPopup() {
+    const popup = document.querySelector('.popup');
+    popup.classList.remove('popup_opened');
+  }
+
   return (
-    <header className="header">
+    <header> 
+      <div className={`header header__${props.header}`}>
       <Link to={"/"}>
         <img className="header__logo" src={headerLogo} alt="Лого"/>
       </Link>
       <div className="header__about">
         <ul className="header__films">
-          <Link to={"/movies"} style={{ textDecoration: 'none' }}>
-            <li className="header__films-list">Фильмы</li>
+          <Link to={"/movies"} className="header__films-list">
+            Фильмы
           </Link>
-          <Link to={"/saved-movies"} style={{ textDecoration: 'none' }}>
-            <li className="header__films-list">Сохраненные фильмы</li>
+          <Link to={"/saved-movies"} className="header__films-list">
+            Сохраненные фильмы
           </Link>
         </ul>
-        <Link to={"/profile"} style={{ textDecoration: 'none' }}>
-          <div className="header__account">
-            <p className="header__text">Аккаунт</p>
-            <img className="header__logo-acc" src={headerAccount} alt="Лого аккаунта"/>
-          </div>
-        </Link>
+        <div className="header__account">
+          <p className="header__text">Аккаунт</p>
+          <Link to={"/profile"}>
+            <img className={`header__logo-acc header__logo-acc-${props.logo}`} src={headerAccount} alt="Лого аккаунта"/>
+          </Link>
+        </div>        
       </div>
-      <button className="header__button"></button>
+      <button className="header__button" onClick={openMenuPopup}></button>
+    </div>
+    <Popup onClose={closeMenuPopup}/>
     </header>
   );
 }

@@ -1,17 +1,16 @@
 .portfolio {
-    margin-left: 70px;
-    margin-right: 70px;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 97px;
     max-width: 1280px;
 }
-
+ 
 .portfolio__header {
     font-weight: 400;
     font-style: normal;
     font-size: 18px;
     line-height: 20px;
-    margin: 0;
-    margin-bottom: 50px;
+    margin: 0 0 50px 70px;
 }
 
 .portfolio__nav {
@@ -20,7 +19,7 @@
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid rgba(66, 66, 66, 1);
-    margin: 20px 0;
+    margin: 20px 70px 0 70px;
     padding-bottom: 19px;
     color: rgba(255, 255, 255, 1);
     text-decoration: none;

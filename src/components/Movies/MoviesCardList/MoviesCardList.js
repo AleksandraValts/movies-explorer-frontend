@@ -1,9 +1,15 @@
 import MoviesCard from '../MoviesCard/MoviesCard.js';
 
-function MoviesCardList() {
+function MoviesCardList(props) {
   return (
     <section className="cards">
       <div className="movies-cards">
+        <MoviesCard  onCardLike={props.onCardLike}/>
+        <MoviesCard/>
+        <MoviesCard/>
+        <MoviesCard/>
+        <MoviesCard/>
+        <MoviesCard/>
         <MoviesCard/>
         <MoviesCard/>
         <MoviesCard/>
@@ -20,3 +26,4 @@ function MoviesCardList() {
 }
 
 export default MoviesCardList;
+
