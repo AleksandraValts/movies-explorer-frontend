@@ -22,13 +22,6 @@
     color: rgba(255, 255, 255, 1);
     border-radius: 2px;
     border: 0;
-    cursor: pointer;
-    transition: .2s ease;
-    opacity: 1;
-}
-  
-.login__button:hover {
-    opacity: 0.85;
 }
   
 .login__link {

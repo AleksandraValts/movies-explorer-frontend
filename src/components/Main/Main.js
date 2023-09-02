@@ -10,7 +10,7 @@ import Footer from '../Footer/Footer.js';
 function Main() {
   return (
     <main className="content">
-        <Header header={"main"} logo={"main"}/>
+        <Header header={"main"} logo={"main"} about={"none"}/>
         <Promo/>
         <AboutProject/>
         <Techs/>

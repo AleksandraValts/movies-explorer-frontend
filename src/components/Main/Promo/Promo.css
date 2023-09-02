@@ -52,11 +52,6 @@
 .promo__link {
     color: rgba(255, 255, 255, 1);
     text-decoration: none;
-    transition: opacity 0.3s linear;
-}
-
-.promo__link:hover {
-    opacity: 0.6;
 }
 
 .promo__img {

@@ -7,7 +7,7 @@ import Header from '../Header/Header.js';
 function Movies() {
   return (
     <main className="movies">
-        <Header/>
+        <Header visibility={"none"}/>
         <SearchForm/>
         <MoviesCardList/>
         <Footer/>

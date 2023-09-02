@@ -23,11 +23,6 @@
     padding-bottom: 19px;
     color: rgba(255, 255, 255, 1);
     text-decoration: none;
-    transition: opacity 0.3s linear;
-}
-
-.portfolio__nav:hover {
-    opacity: 0.6;
 }
 
 .portfolio__nav:first-child {

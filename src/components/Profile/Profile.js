@@ -4,7 +4,7 @@ import Header from '../Header/Header.js';
 function Profile() {
   return (
     <div className="app">
-    <Header/>
+    <Header visibility={"none"}/>
     <section className="profile">
       <h2 className="profile__title">Привет, Виталий!</h2>
         <div className="profile__list">
@@ -18,8 +18,8 @@ function Profile() {
         </div>
       </div>
       <div className="profile__buttons">
-        <button className="profile__button" type="submit">Редактировать</button>
-        <button className="profile__button profile__button-ex" type="submit">Выйти из аккаунта</button>
+        <button className="profile__button button" type="submit">Редактировать</button>
+        <button className="profile__button profile__button-ex button" type="submit">Выйти из аккаунта</button>
       </div>
     </section>
     </div>

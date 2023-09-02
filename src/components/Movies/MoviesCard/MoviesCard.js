@@ -1,12 +1,6 @@
 import film from '../../../images/film.jpg';
 
-function MoviesCard() {
-
-  // временный функционал для проверки работы верстки
-  function handleLikeClick() {
-    const popup = document.querySelector('.movies-card__button');
-    popup.classList.add('movies-card__button-like');
-  }
+function MoviesCard(props) {
 
   return (
     <div className="movies-card">
@@ -15,9 +9,7 @@ function MoviesCard() {
         <p className="movies-card__time">1h 30m</p>
       </div>
       <img className="movies-card__poster" src={film} alt="Фильм"/>
-      <button className="movies-card__button" type="button"
-              onClick={handleLikeClick}
-      >Сохранить</button>
+      {props.children}
     </div>
   );
 }

@@ -55,7 +55,13 @@
 }
 
 .movies-card__button-like {
-    background-color: rgba(238, 52, 101, 1);
+    background-image: url(../../../images/like-active.png);
+    font-size: 0;
+}
+
+.movies-card__button-delete-like {
+    background-image: url(../../../images/like-disactive.png);
+    font-size: 0;
 }
 
 @media screen and (max-width: 768px) {

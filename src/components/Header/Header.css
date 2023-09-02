@@ -15,11 +15,6 @@
     max-width: 38px;
     padding-top: 18px;
     margin-left: 70px;
-    transition: opacity 0.3s linear;
-}
-
-.header__logo:hover {
-    opacity: 0.6;
 }
 
 .header__about {
@@ -34,6 +29,10 @@
     line-height: 18px;
 }
 
+.header__about_none {
+    display: none;
+}
+
 .header__films {
     list-style-type: none;
     display: flex;
@@ -44,23 +43,13 @@
 .header__films-list {
     margin-left: 20px;
     color: rgba(255, 255, 255, 1);
-    transition: opacity 0.3s linear;
     text-decoration: none;
-}
-
-.header__films-list:hover {
-    opacity: 0.6;
 }
 
 .header__account {
     display: flex;
     margin-left: 50px;
     color: rgba(255, 255, 255, 1);
-    transition: opacity 0.3s linear;
-}
-
-.header__account:hover {
-    opacity: 0.6;
 }
 
 .header__text {
@@ -89,6 +78,39 @@
     display: none;
 }
 
+.header__unauthorized {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 21px;
+    margin-bottom: 21px;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 18px;
+    margin-right: 70px;
+}
+
+.header__unauthorized_none {
+    display: none;
+}
+
+.header__register {
+    margin: 0;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 1);
+}
+
+.header__login {
+    margin: 0;
+    background-color: rgba(61, 220, 132, 1);
+    padding: 8px 20px;
+    border-radius: 3px;
+    color: rgba(0, 0, 0, 1);
+    margin-left: 30px;
+    text-decoration: none;
+}
+
 @media screen and (max-width: 768px) {
     .header {
         max-width: 768px;
@@ -102,6 +124,10 @@
         display: none;
     }
 
+    .header__unauthorized {
+        display: none;
+    }
+
     .header__button {
         display: flex;
         margin-right: 30px;
@@ -111,11 +137,6 @@
         height: 44px;
         background-color: transparent;
         border: none;
-        transition: opacity 0.3s linear;
-    }
-
-    .header__button:hover {
-        opacity: 0.6;
     }
 }
 

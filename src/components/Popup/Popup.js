@@ -6,17 +6,17 @@ function Profile(props) {
   return (
     <div className="popup">
       <div className="popup__container">
-        <button type="button" class="popup__button-close"
+        <button type="button" class="popup__button-close button"
         onClick={props.onClose}></button>
         <div className="popup__menu">
-          <Link to={"/"} className="popup__menu-item">Главная</Link>
-          <Link to={"/movies"} className="popup__menu-item">Фильмы</Link>
-          <Link to={"/saved-movies"} className="popup__menu-item">Сохраненные фильмы</Link>
+          <Link to={"/"} className="popup__menu-item button">Главная</Link>
+          <Link to={"/movies"} className="popup__menu-item button">Фильмы</Link>
+          <Link to={"/saved-movies"} className="popup__menu-item button">Сохраненные фильмы</Link>
         </div>
           <div className="popup__account">
             <p className="popup__text">Аккаунт</p>
             <Link to={"/profile"}>
-              <img className="popup__logo-acc" src={headerAccount} alt="Лого аккаунта"/>
+              <img className="popup__logo-acc button" src={headerAccount} alt="Лого аккаунта"/>
             </Link>
           </div>
       </div>
