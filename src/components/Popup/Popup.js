@@ -13,9 +13,9 @@ function Profile(props) {
           <Link to={"/movies"} className="popup__menu-item button">Фильмы</Link>
           <Link to={"/saved-movies"} className="popup__menu-item button">Сохраненные фильмы</Link>
         </div>
-          <Link to={"/profile"} className="popup__account">
+          <Link to={"/profile"} className="popup__account button">
             <p className="popup__text">Аккаунт</p>
-              <img className="popup__logo-acc button" src={headerAccount} alt="Лого"/>
+              <img className="popup__logo-acc" src={headerAccount} alt="Лого"/>
           </Link>
       </div>
     </div>
