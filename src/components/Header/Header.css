@@ -50,6 +50,7 @@
     display: flex;
     margin-left: 50px;
     color: rgba(255, 255, 255, 1);
+    text-decoration: none;
 }
 
 .header__text {
@@ -70,7 +71,7 @@
     align-items: center;
 }
 
-.header__logo-acc-main {
+.header__logo-acc_main {
     background-color: rgba(15, 65, 87, 1);
 }
 
@@ -84,10 +85,10 @@
     align-items: center;
     margin-top: 21px;
     margin-bottom: 21px;
-    font-weight: 400;
+    font-weight: 500;
     font-style: normal;
-    font-size: 14px;
-    line-height: 18px;
+    font-size: 12px;
+    line-height: 16px;
     margin-right: 70px;
 }
 

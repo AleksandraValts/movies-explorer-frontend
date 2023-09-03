@@ -51,7 +51,7 @@
 
 .popup__button-close {
     background-color: transparent;
-    background-image: url(../../images/close.png);
+    background-image: url(../../images/close.svg);
     border: none;
     height: 32px;
     width: 32px;
@@ -65,6 +65,7 @@
     flex-direction: row;
     justify-content: center;
     margin-bottom: 92px;
+    text-decoration: none;
 }
 
 .popup__text {
@@ -80,8 +81,11 @@
 }
 
 .popup__logo-acc {
-    max-width: 30px;
-    height: 30px;
+    max-width: 10px;
+    height: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: rgba(49, 49, 49, 1);
 }
 
 @media screen and (max-width: 400px) {

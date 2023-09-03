@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import headerAccount from '../../images/header-logo-acc-black.png';
+import headerAccount from '../../images/header-icon.svg';
 
 function Profile(props) {
   return (
@@ -13,12 +13,10 @@ function Profile(props) {
           <Link to={"/movies"} className="popup__menu-item button">Фильмы</Link>
           <Link to={"/saved-movies"} className="popup__menu-item button">Сохраненные фильмы</Link>
         </div>
-          <div className="popup__account">
+          <Link to={"/profile"} className="popup__account">
             <p className="popup__text">Аккаунт</p>
-            <Link to={"/profile"}>
-              <img className="popup__logo-acc button" src={headerAccount} alt="Лого аккаунта"/>
-            </Link>
-          </div>
+              <img className="popup__logo-acc button" src={headerAccount} alt="Лого"/>
+          </Link>
       </div>
     </div>
   );

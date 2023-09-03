@@ -12,15 +12,15 @@ function Register() {
         <h2 className="login__title">Добро пожаловать!</h2>
         <span className="login__plaseholder">Имя</span>
         <input className="login__input" type="text" name="name"
-        id="register-name" required />
+        id="register-name" placeholder="Имя" required />
         <span className="login__error">Что-то пошло не так</span>
         <span className="login__plaseholder">E-mail</span>
         <input className="login__input" type="email" name="email"
-        id="register-email" required />
+        id="register-email" required placeholder="Email" />
         <span className="login__error">Что-то пошло не так</span>
         <span className="login__plaseholder">Пароль</span>
         <input className="login__input" type="password" name="password"
-        id="register-password" required />
+        id="register-password" required placeholder="Пароль"/>
         <span className="login__error">Что-то пошло не так</span>
         <button className="login__button button" type="submit">Зарегистрироваться</button>
       </form>

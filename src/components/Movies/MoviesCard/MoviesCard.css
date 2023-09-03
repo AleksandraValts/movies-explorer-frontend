@@ -55,12 +55,12 @@
 }
 
 .movies-card__button-like {
-    background-image: url(../../../images/like-active.png);
+    background-image: url(../../../images/like-active.svg);
     font-size: 0;
 }
 
 .movies-card__button-delete-like {
-    background-image: url(../../../images/like-disactive.png);
+    background-image: url(../../../images/like-disactive.svg);
     font-size: 0;
 }
 

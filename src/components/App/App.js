@@ -11,7 +11,6 @@ import NotFound from '../NotFound/NotFound.js';
 
 function App() {
 return (
-  <div className="app">
     <BrowserRouter>
       <Routes>
         <Route>
@@ -25,7 +24,6 @@ return (
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
-  </div>
   )
 }
 

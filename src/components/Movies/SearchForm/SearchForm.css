@@ -30,6 +30,12 @@
     position: absolute;
     right: -5px;
     top: 10px;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+    color: rgba(255, 255, 255, 1);
 }
 
 .search__input {
@@ -50,15 +56,6 @@
 .search__input:active, :hover, :focus {
     outline: 0;
     outline-offset: 0;
-}
-
-.search__text {
-    font-weight: 500;
-    font-style: normal;
-    font-size: 14px;
-    line-height: 18px;
-    text-align: center;
-    color: rgba(255, 255, 255, 1);
 }
 
 @media screen and (max-width: 768px) {

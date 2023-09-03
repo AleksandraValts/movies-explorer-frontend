@@ -44,10 +44,16 @@
 
 @media screen and (max-width: 768px) {
     .portfolio {
-        margin-left: 50px;
-        margin-right: 50px;
         margin-bottom: 60px;
         max-width: 768px;
+    }
+
+    .portfolio__nav {
+        margin: 20px 50px 0 50px;
+    }
+
+    .portfolio__header {
+        margin-left: 50px;
     }
     
     .portfolio__item {
@@ -66,10 +72,17 @@
 
 @media screen and (max-width: 400px) {
     .portfolio {
-        margin-left: 14px;
-        margin-right: 14px;
         margin-bottom: 40px;
         max-width: 320px;
+    }
+
+    .portfolio__nav {
+        margin-left: 14px;
+        margin-right: 14px;
+    }
+
+    .portfolio__header {
+        margin-left: 14px;
     }
 
     .portfolio__header {

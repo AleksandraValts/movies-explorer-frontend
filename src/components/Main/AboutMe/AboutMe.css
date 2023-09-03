@@ -54,6 +54,10 @@
     border-radius: 10px;
 }
 
+.student__info {
+    margin-right: 30px;
+}
+
 @media screen and (max-width: 768px) {
     .student {
         padding-top: 90px;
@@ -102,6 +106,7 @@
 
     .student__info {
         margin-top: 40px;
+        margin-right: 0;
     }
 }
 

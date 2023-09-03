@@ -23,20 +23,18 @@ function Header(props) {
         <img className="header__logo button" src={headerLogo} alt="Лого"/>
       </Link>
       <div className={`header__about header__about_${props.about}`}>
-        <ul className="header__films">
+        <div className="header__films">
           <Link to={"/movies"} className="header__films-list button">
             Фильмы
           </Link>
           <Link to={"/saved-movies"} className="header__films-list button">
             Сохраненные фильмы
           </Link>
-        </ul>
-        <div className="header__account button">
-          <p className="header__text">Аккаунт</p>
-          <Link to={"/profile"}>
-            <img className={`header__logo-acc header__logo-acc-${props.logo}`} src={headerAccount} alt="Лого аккаунта"/>
-          </Link>
-        </div>        
+        </div>
+        <Link to={"/profile"} className="header__account button">
+            <p className="header__text">Аккаунт</p>
+            <img className={`header__logo-acc header__logo-acc_${props.logo}`} src={headerAccount} alt="Лого аккаунта"/>
+        </Link>       
       </div>
       <div className={`header__unauthorized header__unauthorized_${props.visibility}`}>
         <Link to={"/signup"} className="header__register button">Регистрация</Link>

@@ -12,11 +12,11 @@ function Login() {
         <h2 className="login__title">Рады видеть!</h2>
         <span className="login__plaseholder">E-mail</span>
         <input className="login__input" type="email" name="email"
-        id="login-email" required />
+        id="login-email" required placeholder="Email"/>
         <span className="login__error">Что-то пошло не так</span>
         <span className="login__plaseholder">Пароль</span>
         <input className="login__input" type="password" name="password"
-        id="login-password" required />
+        id="login-password" required placeholder="Пароль"/>
         <span className="login__error">Что-то пошло не так</span>
         <button className="login__button log__button button" type="submit">Войти</button>
       </form>

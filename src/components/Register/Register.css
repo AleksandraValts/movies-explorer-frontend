@@ -62,6 +62,8 @@
   
 .login__input:focus {
     outline: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    
 }
   
 .login__form {
@@ -91,6 +93,7 @@
     color: rgba(139, 139, 139, 1);
     padding-top: 10px;
     padding-bottom: 5px;
+    padding-left: 2px;
 }
 
 .login__error-active {

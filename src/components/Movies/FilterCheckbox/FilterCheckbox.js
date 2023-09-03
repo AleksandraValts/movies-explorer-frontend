@@ -5,8 +5,8 @@ function FilterCheckbox() {
       <label className="checkbox__switch" for="checkbox">
         <input type="checkbox" id="checkbox" />
         <div className="slider round"></div> 
-        </label>
-      </div>
+      </label>
+    </div>
     <span className="checkbox__span">Короткометражки</span>
   </div>
   );

@@ -6,8 +6,8 @@ function AboutMe() {
       <h2 className="about__header">Студент</h2>
       <div className="student__box">
         <div className="student__info">
-          <h3 className="student__name">Александра</h3>
-          <h4 className="student__age">Фронтенд-разработчик, 30 лет</h4>
+          <p className="student__name">Александра</p>
+          <p className="student__age">Фронтенд-разработчик, 30 лет</p>
           <p className="student__about">Родилась в Ульяновске, живу в Москве. 
           Закончила авиационный институт с двумя дипломами. Увлекаюсь сноубордингом,
            путешествиями, книгами и музыкой. Недавно начала кодить и втянулась так, 

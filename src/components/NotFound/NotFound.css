@@ -30,11 +30,16 @@
     text-align: center;
     color: rgba(66, 133, 244, 1);
     margin: 0;
+    margin-bottom: 60px;
 }
 
 @media screen and (max-width: 768px) {
     .not-found {
         margin-top: 408px;
+    }
+
+    .not-found__link {
+        margin-bottom: 222px;
     }
 }
 
@@ -57,5 +62,6 @@
     .not-found__link {
         font-size: 12px;
         line-height: 14.52px;
+        margin-bottom: 30px;
     }
 }
