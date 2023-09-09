@@ -8,6 +8,10 @@
     box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.08);
 }
 
+.movies-card__trailer {
+    cursor: pointer;
+}
+
 .movies-card__about {
     display: flex;
     flex-direction: row;
@@ -35,7 +39,6 @@
 .movies-card__poster {
     object-fit: cover;
     position: relative;
-    cursor: zoom-in;
     height: 200px;
     max-width: 360px;
 }

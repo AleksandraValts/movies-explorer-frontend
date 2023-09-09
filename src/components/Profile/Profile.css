@@ -115,6 +115,16 @@
     color:rgba(255, 255, 255, 1);
 }
 
+.profile__input {
+    background-color: rgba(32, 32, 32, 1);
+    border: none;
+    text-align: right;
+}
+
+.profile__input:hover, :focus {
+    background-color: rgba(170, 170, 170, 0.1);;
+}
+
 @media screen and (max-width: 768px) {
     .profile {
         margin-top: 236px;

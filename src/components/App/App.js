@@ -11,27 +11,24 @@ import Header from '../Header/Header.js';
 import ProtectedRoute from '../../contexts/ProtectedRoute.js';
 import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
 import * as apiAuth from '../../utils/ApiAuth.js';
-//import apiMain from '../../utils/ApiMain.js';
-import apiMovies from '../../utils/ApiMovies.js';
+import apiMain from '../../utils/ApiMain.js';
+import { getMovies } from '../../utils/ApiMovies.js';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
   const navigate = useNavigate();
-
+  const [movies, setMovies] = React.useState([]);
 
   React.useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      apiMovies.getMovies()
-      .then((user) => {
-        setCurrentUser(user);
+      getMovies()
+      .then((movies) => {
+        setMovies(movies);
       })
     .catch((err) => {
       console.log(err);
     })
-    }
-  }, [loggedIn]);
+  }, []);
 
 
   function handleTokenCheck() {
@@ -81,17 +78,37 @@ function App() {
       });
   }
 
+  function handleExit() {
+    localStorage.removeItem('jwt');
+    setCurrentUser({});
+    setLoggedIn(false);
+    navigate('/signin');
+  }
+
+  function handleUpdateUser(data) {
+    apiMain.changeUserInfo(data)
+      .then((data) => {
+        setCurrentUser(data);
+      })
+      .catch((err) => {console.error(err)})
+  }
+
+
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
         <Routes>
           <Route>
-            <Route path="/"  element={<Main/>} />
+            <Route path="/" element={<Main/>} />
             <Route path="/movies" 
-            element={<ProtectedRoute element={Movies} loggedIn={loggedIn}/>} />
+            element={<ProtectedRoute element={Movies} movies={movies}
+            loggedIn={loggedIn}/>} />
             <Route path="/saved-movies" 
             element={<ProtectedRoute element={SavedMovies} loggedIn={loggedIn}/>} />
             <Route path="/profile"
-             element={<ProtectedRoute element={Profile} loggedIn={loggedIn}/>} />
+             element={<ProtectedRoute element={Profile} 
+             loggedIn={loggedIn} onUpdateUser={handleUpdateUser}
+             onExit={handleExit}/>} />
           </Route>
           <Route path="/signup" element={
               <Register onRegister={handleRegNewUser} />} />

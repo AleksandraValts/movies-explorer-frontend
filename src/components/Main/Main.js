@@ -8,6 +8,9 @@ import Header from '../Header/Header.js';
 import Footer from '../Footer/Footer.js';
 
 function Main() {
+
+
+
   return (
     <main className="content">
         <Header header={"main"} logo={"main"} about={"none"}/>
