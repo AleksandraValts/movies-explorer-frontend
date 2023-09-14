@@ -11,18 +11,7 @@ function Movies() {
         <SearchForm/>
         <section className="cards">
           <div className="movies-cards">
-            <MoviesCard >
-              <button className="button movies-card__button-delete-like movies-card__button" 
-              type="button">Сохранить</button>
-            </MoviesCard>
-            <MoviesCard>
-              <button className="button movies-card__button-delete-like movies-card__button" 
-              type="button">Сохранить</button>
-            </MoviesCard>
-            <MoviesCard>
-              <button className="button movies-card__button-delete-like movies-card__button" 
-              type="button">Сохранить</button>
-            </MoviesCard>
+            
           </div>
         </section>
         <Footer/>

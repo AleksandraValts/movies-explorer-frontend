@@ -7,13 +7,12 @@ import Portfolio from './Portfolio/Portfolio.js';
 import Header from '../Header/Header.js';
 import Footer from '../Footer/Footer.js';
 
-function Main() {
-
-
-
+function Main({loggedIn}) {
   return (
     <main className="content">
-        <Header header={"main"} logo={"main"} about={"none"}/>
+      {loggedIn
+      ? (<Header header={"main"} logo={"main"} about={"none"} />) 
+      : (<Header visibility={"none"} logo={"main"} header={"main"} />)}
         <Promo/>
         <AboutProject/>
         <Techs/>

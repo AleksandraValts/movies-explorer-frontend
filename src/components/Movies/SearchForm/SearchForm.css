@@ -58,6 +58,23 @@
     outline-offset: 0;
 }
 
+.search__error {
+    font-weight: 400;
+    font-size: 10px;
+    font-style: normal;
+    line-height: 12px;
+    display: flex;
+    justify-self: start;
+    color: #EE3465;
+    padding-top: 5px;
+    max-width: 396px;
+}
+
+.search__error_none {
+    visibility: hidden;
+}
+
+
 @media screen and (max-width: 768px) {
     .search__container {
         margin: 0;

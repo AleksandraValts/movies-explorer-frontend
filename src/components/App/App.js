@@ -18,19 +18,8 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
   const navigate = useNavigate();
-  const [movies, setMovies] = React.useState([]);
 
-  React.useEffect(() => {
-      getMovies()
-      .then((movies) => {
-        setMovies(movies);
-      })
-    .catch((err) => {
-      console.log(err);
-    })
-  }, []);
-
-
+  // регистрируем нового пользователя, авторизуемся и выходим из профиля (работает, не фиксить)
   function handleTokenCheck() {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
@@ -78,22 +67,38 @@ function App() {
       });
   }
 
+  React.useEffect(() => {
+    if (!loggedIn) {
+      if (localStorage.getItem('jwt')) {
+        const jwt = localStorage.getItem('jwt');
+        handleLoginUser(jwt);
+      }
+    }
+  }, [loggedIn]);
+
   function handleExit() {
     localStorage.removeItem('jwt');
     setCurrentUser({});
     setLoggedIn(false);
+    localStorage.clear();
     navigate('/signin');
   }
 
-  function handleUpdateUser(data) {
-    apiMain.changeUserInfo(data)
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => {console.error(err)})
-  }
+  //Получаем информацию о зарегистрированном пользователе (работает, не надо фиксить)
+  React.useEffect(() => {
+    getUserInfo();
+  }, []);
 
-
+function getUserInfo() {
+  apiMain.getUserInfo()
+    .then((data) => {
+      setCurrentUser(data);
+      setLoggedIn(true);
+    })
+    .catch((err) => {
+      console.log(`Что-то пошло не так! Ошибка сервера ${err}`);
+    })
+}
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -101,13 +106,14 @@ function App() {
           <Route>
             <Route path="/" element={<Main/>} />
             <Route path="/movies" 
-            element={<ProtectedRoute element={Movies} movies={movies}
-            loggedIn={loggedIn}/>} />
+            element={<ProtectedRoute element={Movies}
+            loggedIn={loggedIn}  />} />
             <Route path="/saved-movies" 
             element={<ProtectedRoute element={SavedMovies} loggedIn={loggedIn}/>} />
             <Route path="/profile"
              element={<ProtectedRoute element={Profile} 
-             loggedIn={loggedIn} onUpdateUser={handleUpdateUser}
+             loggedIn={loggedIn} currentUser={currentUser}
+              handleExit={handleExit}
              onExit={handleExit}/>} />
           </Route>
           <Route path="/signup" element={
