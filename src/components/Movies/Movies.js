@@ -6,9 +6,10 @@ import Header from '../Header/Header.js';
 import { getMovies } from '../../utils/ApiMovies.js';
 import apiMain from '../../utils/ApiMain.js';
 
-function Movies() {
-  const [movies, setMovies] = React.useState([]);
+function Movies({onCardSave, savedMovies}) {
+  const [films, setMovies] = React.useState([]);
   const [error, setError] = React.useState('');
+
 
   // получаем карточки со всеми фильмами базы данных (перенесено из App.js, добавить прелоадер)
   function handleSearch(item, shorts) {
@@ -63,11 +64,15 @@ function Movies() {
     return filtered;
   }
 
+
+
   return (
     <main className="movies">
         <Header visibility={"none"}/>
         <SearchForm handleSearch={handleSearch}/>
-        <MoviesCardList movies={movies} error={error}/>
+        <MoviesCardList films={films} error={error}
+                        onCardSave={onCardSave}
+                        savedMovies={savedMovies}/>
         <Footer/>
     </main>
   );

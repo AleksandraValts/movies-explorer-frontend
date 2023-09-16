@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard.js';
 
-function MoviesCardList({movies, error}) {
+function MoviesCardList({films, movies, onCardSave, onCardDelete, savedMovies}) {
 
   const [visibleMovies, setVisibleMovies] = React.useState(0); // 
   const [step, setStep] = React.useState(0);
@@ -11,7 +11,7 @@ function MoviesCardList({movies, error}) {
   function setMoviesRules() {
     const width = window.innerWidth;
     if (location.pathname === "/saved-movies") {
-      setVisibleMovies(movies.length);
+      setVisibleMovies(films.length);
     }
     if (width <= 500) {
       setVisibleMovies(5);
@@ -39,22 +39,27 @@ function MoviesCardList({movies, error}) {
   }, []);
 
   const handleButtonHidden = React.useMemo(() => {
-    if (movies === null) { return false }
-    if (visibleMovies >= movies.length) { return false } 
+    console.log(films.length)
+    if (films === null) { return false }
+    if (visibleMovies >= films.length) { return false } 
     else { return true }
-  }, [movies, visibleMovies]);
+  }, [films, visibleMovies]);
 
   return (
     <section className="cards">
       <div className="movies-cards">
-      {movies.map((movie, amount) => {
+      {films.map((movie, amount) => {
         if (amount < visibleMovies) {
-          return (<MoviesCard key={movie.id} movie={movie} />)
-        }
+          return (
+          <MoviesCard key={movie.id ?? movie.movieId}
+                      onCardDelete={onCardDelete}
+                      savedMovies={savedMovies}
+                      onCardSave={onCardSave} movie={movie}/>
+        )}
         return null;
       })} 
       </div>
-      {handleButtonHidden && (
+      {handleButtonHidden && location.pathname !== '/saved-movies' && (
       <button className="button movies-cards__button" type="button" 
               onClick={showMoreMovies}>Еще
       </button>

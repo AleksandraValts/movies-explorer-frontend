@@ -4,12 +4,12 @@ import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
 
 function SearchForm({ handleSearch }) {
   const [input, setInput] = React.useState('');
-  const { location } = useLocation();
+  const { pathname } = useLocation();
   const [shortFilm, setShortFilm] = React.useState(false);
   const [error, setError] = React.useState(false);
 
   React.useEffect(() => {
-    if (location === '/movies') {
+    if (pathname === '/movies') {
       const item = localStorage.getItem('item');
       const shorts = JSON.parse(localStorage.getItem('shorts'));
       if (item) {
@@ -43,7 +43,7 @@ function SearchForm({ handleSearch }) {
   function handleFilterCheckbox () {
     setShortFilm(!shortFilm);
     handleSearch(input, !shortFilm);
-    if (location === '/movies') {
+    if (pathname === '/movies') {
       localStorage.setItem('shorts', !shortFilm);
     }
   };
@@ -53,8 +53,9 @@ function SearchForm({ handleSearch }) {
       <div className="search__container">
         <form className="search__form" name="search-form"
               onSubmit={handleSubmit}  noValidate>
-            <input className="search__input" type="text" placeholder="Фильм" 
-                required onChange={handeleInput} id="search" name="search"/>
+            <input className="search__input" type="text"
+                   placeholder="Фильм" required id="search"
+                   onChange={handeleInput} name="search"/>
             <button className="search__button button" type="submit" 
                     aria-label="Поиск">Поиск
             </button>

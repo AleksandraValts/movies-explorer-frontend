@@ -10,7 +10,7 @@ import Footer from '../Footer/Footer.js';
 function Main({loggedIn}) {
   return (
     <main className="content">
-      {loggedIn
+      {!loggedIn
       ? (<Header header={"main"} logo={"main"} about={"none"} />) 
       : (<Header visibility={"none"} logo={"main"} header={"main"} />)}
         <Promo/>

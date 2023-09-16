@@ -1,29 +1,63 @@
 import React from 'react';
 import Header from '../Header/Header.js';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
+//import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
 import apiMain from '../../utils/ApiMain.js';
+import { useFormWithValidation } from '../../utils/Validator.js';
 
-function Profile({ handleExit }) {
-  const currentUser = React.useContext(CurrentUserContext);
+function Profile({ loggedIn, handleExit, currentUser }) {
+ // const currentUser = React.useContext(CurrentUserContext);
   const [name, setName] = React.useState(currentUser.name);
   const [lastName, setLastName] = React.useState(currentUser.name);
   const [email, setEmail] = React.useState(currentUser.email);
   const [lastEmail, setLastEmail] = React.useState(currentUser.email);
   const [isVisibleButton, setVisibleButton] = React.useState(false);
   const [isButton, setButton] = React.useState(false);
+  
+  const { values, handleChange, errors, isValid, resetForm} = useFormWithValidation();
+  const [serverErrorMessage, setServerErrorMessage] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState('');
 
-  const handleSubmit = (evt) => {
+  React.useEffect(() => {
+    resetForm({ name, email });
+  }, [currentUser]);
+
+  React.useEffect(() => {
+    setServerErrorMessage('');
+  }, [values]);
+
+  // Ошибки ввода данных
+  React.useEffect(() => {
+    const msgName = errors.name ? `Имя: ${errors.name}` : '';
+    const msgEmail = errors.email ? `Почта: ${errors.email}` : '';
+    setErrorMessage(`${msgName} ${msgEmail}`);
+  }, [errors]);
+
+
+
+  const handleSubmit = (evt, data) => {
     evt.preventDefault();
 
-    apiMain.changeUserInfo({ name, email })
-    .then(() => {
+    apiMain.changeUserInfo({name, email})
+    .then((data) => {
+     // setCurrentUser(data);
+     setServerErrorMessage('Информация о пользователе сохранена.');
       setVisibleButton(false);
       setButton(false);
       setLastName(name);
       setLastEmail(email);
+      resetForm({ name, email });
     })
     .catch((err) => {
-      console.log(err)
+      switch (err) {
+        case 400:
+          setServerErrorMessage("Некорректное значение одного или нескольких полей");
+          break;
+        case 409:
+          setServerErrorMessage(`Пользователь ${values.email} уже существует.`);
+          break;
+        default:
+          setServerErrorMessage(`Невозможно сохранить данные на сервере. Ошибка ${err}.`);
+        }
     });
   };
 
@@ -51,6 +85,7 @@ function Profile({ handleExit }) {
     setVisibleButton(true);
   }
 
+
   return (
     <div className="app">
     <Header visibility={"none"}/>
@@ -63,17 +98,19 @@ function Profile({ handleExit }) {
               name="name" type="text" value={name} placeholder="Имя"
               onChange={handleNameChange} disabled={isVisibleButton ? false : true}/>
         </div>
+        <span className="profile__input-error">{errorMessage}</span>
         <div className="profile__container">
             <label className="profile__item">E-mail</label>
             <input className="profile__item profile__input" id="email"
             name="name" type="email" value={email} 
             onChange={handleEmailChange} disabled={isVisibleButton ? false : true}/>
         </div>
+        <span className="profile__input-error">{errorMessage}</span>
       </div>
       {isVisibleButton
       ?
       (<div className="profile__save profile__save_none">
-        <span className="profile__span">При обновлении произошла ошибка</span>
+        <span className="profile__span">{serverErrorMessage}</span>
         <button className="profile__button-save_none profile__button-save button" 
                 type="submit" disabled={!isButton}>Сохранить</button>
         </div>)

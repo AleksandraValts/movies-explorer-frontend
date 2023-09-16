@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import headerAccount from '../../images/header-icon.svg';
 
-function Profile(props) {
+function Popup(props) {
   return (
     <div className="popup">
       <div className="popup__container">
-        <button type="button" class="popup__button-close button"
+        <button type="button" className="popup__button-close button"
         onClick={props.onClose}></button>
         <div className="popup__menu">
           <Link to={"/"} className="popup__menu-item button">Главная</Link>
@@ -22,4 +22,4 @@ function Profile(props) {
   );
 }
 
-export default Profile;
+export default Popup;

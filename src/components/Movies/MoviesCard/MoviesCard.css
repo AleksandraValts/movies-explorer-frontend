@@ -25,6 +25,10 @@
     font-style: normal;
     font-size: 15px;
     line-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 250px;
 }
 
 .movies-card__time {
@@ -64,6 +68,11 @@
 
 .movies-card__button-delete-like {
     background-image: url(../../../images/like-disactive.svg);
+    font-size: 0;
+}
+
+.movies-card__button-save-like {
+    background-image: url(../../../images/like-save.svg);
     font-size: 0;
 }
 
