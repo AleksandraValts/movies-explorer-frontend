@@ -7,7 +7,6 @@ import apiMain from '../../utils/ApiMain.js';
 
 function SavedMovies({onCardDelete, movies, loggedIn}) {
 
-  console.log(loggedIn);
   const [films, setfilms] = React.useState(
     JSON.parse(localStorage.getItem('savedMovies')) || []
   ); 

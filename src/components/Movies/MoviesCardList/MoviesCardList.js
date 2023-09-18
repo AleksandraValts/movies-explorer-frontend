@@ -45,6 +45,8 @@ function MoviesCardList({films, movies, onCardSave, onCardDelete, savedMovies}) 
     else { return true }
   }, [films, visibleMovies]);
 
+
+
   return (
     <section className="cards">
       <div className="movies-cards">

@@ -6,7 +6,7 @@ import Header from '../Header/Header.js';
 import { getMovies } from '../../utils/ApiMovies.js';
 import apiMain from '../../utils/ApiMain.js';
 
-function Movies({onCardSave, savedMovies}) {
+function Movies({onCardSave, savedMovies, onCardDelete}) {
   const [films, setMovies] = React.useState([]);
   const [error, setError] = React.useState('');
 
@@ -28,19 +28,7 @@ function Movies({onCardSave, savedMovies}) {
     }
   };
 
-  // получаем карточки с фильмами из хранилища
-   React.useEffect(() => {
-    const localFilms = localStorage.getItem('localFilms');
-    if (!localFilms) {
-      apiMain.getSavedMovies()
-        .then((film) => {
-          if (film.length > 0) {
-            localStorage.setItem('localFilms', JSON.stringify(film));
-          }    
-        })
-        .catch(() => { setError('Ошибка подключения')});
-    }
-  }, []);
+
 
   function handleFilter(item, shorts) {
     const localFilms = JSON.parse(localStorage.getItem('films'));
@@ -71,7 +59,7 @@ function Movies({onCardSave, savedMovies}) {
         <Header visibility={"none"}/>
         <SearchForm handleSearch={handleSearch}/>
         <MoviesCardList films={films} error={error}
-                        onCardSave={onCardSave}
+                        onCardSave={onCardSave} onCardDelete={onCardDelete}
                         savedMovies={savedMovies}/>
         <Footer/>
     </main>

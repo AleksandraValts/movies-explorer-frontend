@@ -12,19 +12,19 @@ function MoviesCard({ onCardSave, onCardDelete, savedMovies, movie}) {
 
   let { pathname } = useLocation();
   const isLiked = savedMovies
-  ? savedMovies.some((item) => item.movieId === movie.id)
+  ? savedMovies.some(c => c.movieId === movie.id)
   : false;
 
 // Обработчик клика лайка
 const handleLikeClick = () => {
   onCardSave(movie);
-  console.log('ok')
 };
 
 // Обработчик клика удаления
 const handleDeleteClick = () => {
   onCardDelete(movie);
 };
+
 
   return (
     <div className="movies-card">
@@ -52,7 +52,7 @@ const handleDeleteClick = () => {
             ? "button movies-card__button movies-card__button-like" 
             : "button movies-card__button movies-card__button-save-like" 
           }
-          type="button" onClick={handleLikeClick}
+          type="button" onClick={handleLikeClick} 
          ></button>
          )}
     </div>

@@ -18,7 +18,7 @@ class ApiMain {
         'content-type': 'application/json',
         authorization: `Bearer ${localStorage.getItem('jwt')}`,
       },
-      body: JSON.stringify(data),
+     // body: JSON.stringify(data),
     }).then((res) => this._checkResponse(res));
   }
 

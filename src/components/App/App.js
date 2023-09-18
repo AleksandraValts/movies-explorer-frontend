@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, useLocation, } from 'react-router-dom';
 import Main from '../Main/Main.js';
 import Movies from '../Movies/Movies.js';
 import SavedMovies from '../SavedMovies/SavedMovies.js';
@@ -7,8 +7,6 @@ import Register from '../Register/Register.js';
 import Login from '../Login/Login.js';
 import Profile from '../Profile/Profile.js';
 import NotFound from '../NotFound/NotFound.js';
-//import Header from '../Header/Header.js';
-//import Popup from '../Popup/Popup.js';
 import ProtectedRoute from '../../contexts/ProtectedRoute.js';
 import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
 import * as apiAuth from '../../utils/ApiAuth.js';
@@ -20,42 +18,46 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [error, setError] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState({text: ''});
 
-
-  // регистрируем нового пользователя, авторизуемся и выходим из профиля (работает, не фиксить)
+  // регистрируем нового пользователя, авторизуемся
   function handleTokenCheck() {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
       apiAuth.checkToken(jwt)
       .then((res) => {
-       // const { _id } = res;
         setLoggedIn(true);
         setCurrentUser(res);
       })
-        .then(() => {
-          navigate('/movies');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .then(() => {navigate(location.pathname)})
+      .catch((err) => { console.log(err)});
     }
   }
 
-  React.useEffect(() => {
-    handleTokenCheck();
-  }, [])
+  React.useEffect(() => {handleTokenCheck()}, [])
 
   function handleRegNewUser({email, password, name}) {
     return apiAuth
        .register(email, password, name)
        .then((res) => {
-         if (res) {
-          navigate('/signin');
-         }
+         if (res) { navigate('/signin') }
        })
        .catch((err) => {
-         console.log(err);
-       })
+        console.log(err);
+        setErrorMessage({text:''});
+        setError(true);
+        if (err === 'Статус ошибки: 400') {
+          setErrorMessage({text:'При регистрации пользователя произошла ошибка'});
+        }
+        if (err === 'Статус ошибки: 409') {
+          setErrorMessage({text:'Пользователь с таким email уже существует'});
+        }
+        if (err === 'Статус ошибки: 500') {
+          setErrorMessage({text: 'На сервере произошла ошибка'});
+        }
+      });
   }
 
   function handleLoginUser({email, password}) {
@@ -72,16 +74,16 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+        setErrorMessage({text:''});
+        setError(true);
+        if (err === 'Статус ошибки: 401') {
+          setErrorMessage({text: 'При входе произошла ошибка'});
+        }
+        if (err === 'Статус ошибки: 500') {
+          setErrorMessage({text: 'На сервере произошла ошибка'});
+        }
       });
   }
-
- // React.useEffect(() => { if (!loggedIn) {
-  //    if (localStorage.getItem('jwt')) {
-  //      const jwt = localStorage.getItem('jwt');
-   //     handleLoginUser(jwt);
-   //   }
-   // }
- // }, [loggedIn]);
 
   function handleExit() {
     localStorage.removeItem('jwt');
@@ -90,21 +92,31 @@ function App() {
     navigate('/signin');
   }
 
-  //Получаем информацию о зарегистрированном пользователе (работает, не надо фиксить)
-  React.useEffect(() => {
-    getUserInfo();
-  }, [loggedIn]);
+  //Получаем информацию о зарегистрированном пользователе
+  React.useEffect(() => {getUserInfo()}, [loggedIn]);
 
 function getUserInfo() {
   apiMain.getUserInfo()
     .then((data) => {
       setCurrentUser(data);
-      setLoggedIn(true);
+    //  setLoggedIn(true);
     })
-    .catch((err) => {
-      console.log(`Что-то пошло не так! Ошибка сервера ${err}`);
-    })
+    .catch((err) => {console.log(err)})
 }
+
+  // получаем карточки с фильмами из хранилища
+  React.useEffect(() => {
+    const localFilms = localStorage.getItem('localFilms');
+    if (!localFilms) {
+      apiMain.getSavedMovies()
+        .then((film) => {
+          if (film.length > 0) {
+            localStorage.setItem('localFilms', JSON.stringify(film));
+          }    
+        })
+        .catch((err) => {console.log(err)});
+    }
+  }, []);
 
 React.useEffect(() => {
   if (loggedIn) {
@@ -114,19 +126,15 @@ React.useEffect(() => {
         setCurrentUser(movies)
         setSavedMovies(movies.reverse())
       })
-      .catch((err) => {
-        console.log(`Что-то пошло не так! Ошибка сервера ${err}`);
-      })
+      .catch((err) => {console.log(err)})
   }
 }, [loggedIn]);
 
-
 const [savedMovies, setSavedMovies] = React.useState(null);
-
 function handleLike(movie) {
-  const isMovieSaved = savedMovies.some((item) => item.movieId === movie.id);
-  console.log(isMovieSaved)
-  if (!isMovieSaved) {
+  const isSaved = savedMovies.some(c => c.movieId === movie.id);
+  console.log(isSaved)
+  if (!isSaved) {
     apiMain
       .saveMovie({
         movieId: movie.id,
@@ -144,35 +152,27 @@ function handleLike(movie) {
       })
       .then((movie) => setSavedMovies([movie, ...savedMovies]))
       .then((() => console.log("works")))
-      .catch((err) => console.log(err, err.status, err.message));
+      .catch((err) => console.log(err));
   } else {
-    const id = savedMovies.find((item) => item.movieId === movie.id)._id;
-    console.log(id)
+    const id = savedMovies.find(c => c.movieId === movie.id)._id;
     apiMain
       .deleteSavedMovie(id)
       .then(() => {
-        setSavedMovies((res) =>
-          res.filter((item) => item.movieId !== movie.id)
-        );
+        setSavedMovies(res => res.filter(c => c.movieId !== movie.id))
       })
       .then((() => console.log("works 2")))
-      .catch((err) => console.log(err, err.status, err.message));
+      .catch((err) => console.log(err));
   }
 };
 
-// Удаляю карточку из сохранённых фильмов
 function handleDeleteLike(movie) {
-  apiMain
-    .deleteSavedMovie(movie._id)
+  apiMain.deleteSavedMovie(movie._id)
     .then(() => {
-      setSavedMovies((res) =>
-        res.filter((item) => item.movieId !== movie.movieId)
-      );
+      setSavedMovies(res => res.filter(c => c._id !== movie._id))
     })
     .then((() => console.log("works 3")))
-    .catch((err) => console.log(err, err.status, err.message));
+    .catch((err) => console.log(err));
 };
-
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -193,9 +193,11 @@ function handleDeleteLike(movie) {
                    handleExit={handleExit} onExit={handleExit}/>}/>
           </Route>
           <Route path="/signup"
-                 element={<Register onRegister={handleRegNewUser}/>}/>
+                 element={<Register onRegister={handleRegNewUser}
+                 error={error} text={errorMessage.text}/>}/>
           <Route path="/signin" 
-                 element={<Login onLogin={handleLoginUser}/>}/>
+                 element={<Login onLogin={handleLoginUser}
+                 error={error} text={errorMessage.text}/>}/>
           <Route path="*" element={<NotFound/>}/>         
         </Routes>
     </CurrentUserContext.Provider>
