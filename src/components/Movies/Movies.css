@@ -1,0 +1,9 @@
+.movies__error {
+    color:rgba(238, 52, 101, 1);
+    font-weight: 400;
+    font-style: normal;
+    font-size: 13px;
+    line-height: 15.73px;
+    text-align: center;
+    margin: 100px auto;
+}

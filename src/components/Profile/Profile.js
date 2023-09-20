@@ -1,14 +1,13 @@
 import React from 'react';
 import Header from '../Header/Header.js';
-//import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
 import apiMain from '../../utils/ApiMain.js';
-//import { useFormWithValidation } from '../../utils/Validator.js';
+import {CONFLICT, SERVER_ERROR, PROFILE_ERROR} from '../../utils/errors.js'
 
-function Profile({ loggedIn, handleExit, currentUser, setCurrentUser }) {
-  const [name, setName] = React.useState(currentUser.name);
-  const [lastName, setLastName] = React.useState(currentUser.name);
-  const [email, setEmail] = React.useState(currentUser.email);
-  const [lastEmail, setLastEmail] = React.useState(currentUser.email);
+function Profile({ handleExit, currentUser }) {
+  const [name, setName] = React.useState(currentUser.data.name);
+  const [lastName, setLastName] = React.useState(currentUser.data.name);
+  const [email, setEmail] = React.useState(currentUser.data.email);
+  const [lastEmail, setLastEmail] = React.useState(currentUser.data.email);
   const [isVisibleButton, setVisibleButton] = React.useState(false);
   const [isButton, setButton] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -17,13 +16,15 @@ function Profile({ loggedIn, handleExit, currentUser, setCurrentUser }) {
   const [errors, setErrors] = React.useState({});
   const [isValid, setIsValid] = React.useState(false);
 
-  const handleSubmit = (evt, data) => {
+  console.log(currentUser.data.name)
+
+  function handleSubmit(evt) {
     evt.preventDefault();
     apiMain.changeUserInfo({name, email})
-    .then((data) => {
-     // setCurrentUser(data);
+    .then(() => {
       setVisibleButton(false);
       setButton(false);
+      setErrorMessage('')
       setLastName(name);
       setLastEmail(email);
     })
@@ -31,15 +32,9 @@ function Profile({ loggedIn, handleExit, currentUser, setCurrentUser }) {
       console.log(err);
       setErrorMessage('');
       setError(true);
-      if (err === 400) {
-        setErrorMessage('При обновлении профиля произошла ошибка');
-      }
-      if (err === 409) {
-        setErrorMessage('Пользователь с таким email уже существует');
-      }
-      if (err === 500) {
-        setErrorMessage('На сервере произошла ошибка');
-      }
+      if (err === 400) { setErrorMessage(PROFILE_ERROR)}
+      if (err === 409) { setErrorMessage(CONFLICT)}
+      if (err === 500) { setErrorMessage(SERVER_ERROR)}
     });
   };
 
@@ -51,11 +46,8 @@ function Profile({ loggedIn, handleExit, currentUser, setCurrentUser }) {
     setErrors({ ...errors, [name]: target.validationMessage });
     setIsValid(target.closest('form').checkValidity());
     setName(value);
-    if (value !== lastName) {
-      setButton(true);
-    } else {
-      setButton(false);
-    }
+    if (value !== lastName) { setButton(true)} 
+    else { setButton(false)}
   }
 
   function handleEmailChange(evt) {
@@ -66,11 +58,8 @@ function Profile({ loggedIn, handleExit, currentUser, setCurrentUser }) {
     setErrors({ ...errors, [name]: target.validationMessage });
     setIsValid(target.closest('form').checkValidity());
     setEmail(value);
-    if (value !== lastEmail) {
-      setButton(true);
-    } else {
-      setButton(false);
-    }
+    if (value !== lastEmail) { setButton(true)} 
+    else { setButton(false)}
   }
 
   function showSaveBtn() {

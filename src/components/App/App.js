@@ -11,8 +11,8 @@ import ProtectedRoute from '../../contexts/ProtectedRoute.js';
 import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
 import * as apiAuth from '../../utils/ApiAuth.js';
 import apiMain from '../../utils/ApiMain.js';
-//import apiMovies from '../../utils/ApiMovies.js';
 import Preloader from '../Movies/Preloader/Preloader.js';
+import {CONFLICT, SERVER_ERROR, REG_ERROR, AUTH_ERROR} from '../../utils/errors.js'
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
@@ -21,8 +21,9 @@ function App() {
   const location = useLocation();
   const [error, setError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState({text: ''});
+  const [savedMovies, setSavedMovies] = React.useState([]);
+  //const [isLoading, setIsLoading] = React.useState(false);
 
-  // регистрируем нового пользователя, авторизуемся
   function handleTokenCheck() {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
@@ -42,32 +43,33 @@ function App() {
     return apiAuth
        .register(email, password, name)
        .then((res) => {
-         if (res) { navigate('/signin') }
+         if (res) {
+          setErrorMessage({text:''})
+          navigate('/signin')}
        })
        .catch((err) => {
         console.log(err);
         setErrorMessage({text:''});
         setError(true);
         if (err === 'Статус ошибки: 400') {
-          setErrorMessage({text:'При регистрации пользователя произошла ошибка'});
+          setErrorMessage({text: REG_ERROR});
         }
         if (err === 'Статус ошибки: 409') {
-          setErrorMessage({text:'Пользователь с таким email уже существует'});
+          setErrorMessage({text: CONFLICT});
         }
         if (err === 'Статус ошибки: 500') {
-          setErrorMessage({text: 'На сервере произошла ошибка'});
+          setErrorMessage({text: SERVER_ERROR});
         }
       });
   }
 
   function handleLoginUser({email, password}) {
-    return apiAuth
-      .authorise(email, password)
+    apiAuth.authorise(email, password)
       .then((data) => {
-        if(!data) { return }
-        if (data.token) {
+       // if(!data) { return }
+        if (data) {
           setLoggedIn(true);
-          getUserInfo();
+        //  getUserInfo();
           localStorage.setItem('jwt', data.token);
           navigate('/movies');
         }
@@ -77,102 +79,62 @@ function App() {
         setErrorMessage({text:''});
         setError(true);
         if (err === 'Статус ошибки: 401') {
-          setErrorMessage({text: 'При входе произошла ошибка'});
+          setErrorMessage({text: AUTH_ERROR});
         }
         if (err === 'Статус ошибки: 500') {
-          setErrorMessage({text: 'На сервере произошла ошибка'});
+          setErrorMessage({text: SERVER_ERROR});
         }
       });
   }
 
   function handleExit() {
-    localStorage.removeItem('jwt');
+    localStorage.clear();
     setCurrentUser({});
     setLoggedIn(false);
     navigate('/signin');
   }
 
-  //Получаем информацию о зарегистрированном пользователе
-  React.useEffect(() => {getUserInfo()}, [loggedIn]);
-
-function getUserInfo() {
-  apiMain.getUserInfo()
-    .then((data) => {
-      setCurrentUser(data);
-    //  setLoggedIn(true);
-    })
-    .catch((err) => {console.log(err)})
-}
-
-  // получаем карточки с фильмами из хранилища
   React.useEffect(() => {
-    const localFilms = localStorage.getItem('localFilms');
-    if (!localFilms) {
+    if (loggedIn) {
+      apiMain.getUserInfo()
+        .then((user) => {
+          setCurrentUser(user);
+        })
+        .catch((err) => {console.log(err)});
+
       apiMain.getSavedMovies()
-        .then((film) => {
-          if (film.length > 0) {
-            localStorage.setItem('localFilms', JSON.stringify(film));
-          }    
+        .then((movies) => {
+          setSavedMovies(movies.reverse())
         })
         .catch((err) => {console.log(err)});
     }
-  }, []);
+  }, [loggedIn]);
 
-React.useEffect(() => {
-  if (loggedIn) {
-    apiMain
-      .getSavedMovies()
-      .then((movies) => {
-        setCurrentUser(movies)
-        setSavedMovies(movies.reverse())
-      })
-      .catch((err) => {console.log(err)})
-  }
-}, [loggedIn]);
+  function handleLike(movie) {
+    const isSaved = savedMovies.some(c => c.movieId === movie.id);
+    if (!isSaved) {
+      apiMain.saveMovie(movie)
+        .then((newMovie) => {
+          setSavedMovies([...savedMovies, newMovie]);
+        })
+    } else {
+      const id = savedMovies.find(c => c.movieId === movie.id)._id;
+      apiMain
+        .deleteSavedMovie(id)
+        .then(() => {
+          setSavedMovies(res => res.filter(c => c.movieId !== movie.id))
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
-const [savedMovies, setSavedMovies] = React.useState(null);
-function handleLike(movie) {
-  const isSaved = savedMovies.some(c => c.movieId === movie.id);
-  console.log(isSaved)
-  if (!isSaved) {
-    apiMain
-      .saveMovie({
-        movieId: movie.id,
-        nameRU: movie.nameRU,
-        image: 'https://api.nomoreparties.co' + movie.image.url,
-        trailerLink: movie.trailerLink,
-        duration: movie.duration,
-        country: movie.country,
-        director: movie.director,
-        year: movie.year,
-        description: movie.description,
-        thumbnail: 'https://api.nomoreparties.co' + movie.image.formats.thumbnail.url,
-        owner: movie.owner,
-        nameEN: movie.nameEN,
-      })
-      .then((movie) => setSavedMovies([movie, ...savedMovies]))
-      .then((() => console.log("works")))
-      .catch((err) => console.log(err));
-  } else {
-    const id = savedMovies.find(c => c.movieId === movie.id)._id;
-    apiMain
-      .deleteSavedMovie(id)
+  function handleDeleteLike(movie) {
+    apiMain.deleteSavedMovie(movie._id)
       .then(() => {
-        setSavedMovies(res => res.filter(c => c.movieId !== movie.id))
+        setSavedMovies(res => res.filter(c => c._id !== movie._id))
       })
-      .then((() => console.log("works 2")))
       .catch((err) => console.log(err));
-  }
-};
-
-function handleDeleteLike(movie) {
-  apiMain.deleteSavedMovie(movie._id)
-    .then(() => {
-      setSavedMovies(res => res.filter(c => c._id !== movie._id))
-    })
-    .then((() => console.log("works 3")))
-    .catch((err) => console.log(err));
-};
+  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -186,7 +148,7 @@ function handleDeleteLike(movie) {
             <Route path="/saved-movies" 
                    element={<ProtectedRoute element={SavedMovies}
                    loggedIn={loggedIn} onCardDelete={handleDeleteLike}
-                   movies={savedMovies}/>}/>
+                   savedMovies={savedMovies}/>}/>
             <Route path="/profile"
                    element={<ProtectedRoute element={Profile} 
                    loggedIn={loggedIn} currentUser={currentUser}
@@ -198,10 +160,12 @@ function handleDeleteLike(movie) {
           <Route path="/signin" 
                  element={<Login onLogin={handleLoginUser}
                  error={error} text={errorMessage.text}/>}/>
-          <Route path="*" element={<NotFound/>}/>         
+          <Route path="*" element={<NotFound/>}/>   
         </Routes>
+   
     </CurrentUserContext.Provider>
   )
 }
 
 export default App;
+

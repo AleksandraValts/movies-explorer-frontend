@@ -5,7 +5,7 @@ import Popup from '../Popup/Popup.js';
 
 function Header(props) {
 
-  // временный функционал для проверки работы верстки
+  // проверка работы верстки
   function openMenuPopup() {
     const popup = document.querySelector('.popup');
     popup.classList.add('popup_opened');

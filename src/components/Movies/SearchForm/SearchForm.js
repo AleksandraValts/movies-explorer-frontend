@@ -12,15 +12,10 @@ function SearchForm({ handleSearch }) {
     if (pathname === '/movies') {
       const item = localStorage.getItem('item');
       const shorts = JSON.parse(localStorage.getItem('shorts'));
-      if (item) {
-        setInput(item);
-      }
-      if (shorts) {
-        setShortFilm(shorts);
-      }
-      if (item || shorts === true) {
-        handleSearch(item, shorts);
-      }
+      if (item) { setInput(item)}
+      if (shorts) { setShortFilm(shorts)}
+      if (item || shorts === true) { handleSearch(item, shorts);
+}
     }
   }, []);
 

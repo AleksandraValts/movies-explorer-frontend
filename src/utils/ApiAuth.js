@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.valts.movies.nomoredomainsicu.ru';
+export const BASE_URL = 'http://localhost:3000';
 
 const checkRes = (res) => {
   if (res.ok) {
@@ -35,6 +35,7 @@ export const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
+      
       'Content-Type': 'application/json',
       authorization: `Bearer ${token}`,
     }

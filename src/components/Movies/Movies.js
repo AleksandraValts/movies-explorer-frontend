@@ -4,15 +4,16 @@ import MoviesCardList from './MoviesCardList/MoviesCardList.js';
 import Footer from '../Footer/Footer.js';
 import Header from '../Header/Header.js';
 import { getMovies } from '../../utils/ApiMovies.js';
-import apiMain from '../../utils/ApiMain.js';
+import Preloader from '../Movies/Preloader/Preloader.js';
+import {EMPTY_SEARCH, CONNECTION_ERROR} from '../../utils/errors.js'
 
 function Movies({onCardSave, savedMovies, onCardDelete}) {
   const [films, setMovies] = React.useState([]);
   const [error, setError] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false); 
 
-
-  // получаем карточки со всеми фильмами базы данных (перенесено из App.js, добавить прелоадер)
   function handleSearch(item, shorts) {
+    setIsLoading(true)
     const films =  JSON.parse(localStorage.getItem('films'));
     if (!films) {
       getMovies()
@@ -21,30 +22,31 @@ function Movies({onCardSave, savedMovies, onCardDelete}) {
           handleFilter(item, shorts);
         })
         .catch(() => {
-          setError('Ошибка подключения');
+          setIsLoading(false)
+          setError(CONNECTION_ERROR);
         });
-    } else {
-      handleFilter(item, shorts);
-    }
+    } else { handleFilter(item, shorts)}
   };
-
-
-
+  
   function handleFilter(item, shorts) {
+    setError('')
     const localFilms = JSON.parse(localStorage.getItem('films'));
     const filtered = handleSearchFilter(localFilms, item, shorts);
     if (filtered.length === 0) {
-      setError("Не найдено");
+      setIsLoading(false)
+      setError(EMPTY_SEARCH);
     }
     setMovies(filtered);
+    setIsLoading(false)
   };
 
   function handleSearchFilter(films, item, short) {
     if (!films) { return []}
     let filtered = [...films];
     if (item) {
-      filtered = filtered.filter((film) => film.nameRU
-        .toLowerCase().includes(item.toLowerCase()));
+      filtered = filtered.filter((film) =>
+      film.nameRU.toLowerCase().includes(item.toLowerCase()) ||
+      film.nameEN.toLowerCase().includes(item.toLowerCase()))
     }
     if (short) {
       return filtered.filter((film) => film.duration <= 40);
@@ -52,15 +54,17 @@ function Movies({onCardSave, savedMovies, onCardDelete}) {
     return filtered;
   }
 
-
-
   return (
     <main className="movies">
         <Header visibility={"none"}/>
         <SearchForm handleSearch={handleSearch}/>
-        <MoviesCardList films={films} error={error}
+        
+        {isLoading ? (<Preloader />) : (
+        <MoviesCardList movies={films} error={error}
                         onCardSave={onCardSave} onCardDelete={onCardDelete}
-                        savedMovies={savedMovies}/>
+                        savedMovies={savedMovies} />)
+        }         
+        <p className='movies__error'>{error}</p>            
         <Footer/>
     </main>
   );

@@ -1,18 +1,13 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard.js';
 
-function MoviesCardList({films, movies, onCardSave, onCardDelete, savedMovies}) {
 
-  const [visibleMovies, setVisibleMovies] = React.useState(0); // 
+function MoviesCardList({isSaved, onCardSave, onCardDelete, savedMovies, handleLike, movies}) {
+  const [visibleMovies, setVisibleMovies] = React.useState([]); // 
   const [step, setStep] = React.useState(0);
-  const location = useLocation();
   
   function setMoviesRules() {
     const width = window.innerWidth;
-    if (location.pathname === "/saved-movies") {
-      setVisibleMovies(films.length);
-    }
     if (width <= 500) {
       setVisibleMovies(5);
       setStep(2);
@@ -39,29 +34,30 @@ function MoviesCardList({films, movies, onCardSave, onCardDelete, savedMovies}) 
   }, []);
 
   const handleButtonHidden = React.useMemo(() => {
-    console.log(films.length)
-    if (films === null) { return false }
-    if (visibleMovies >= films.length) { return false } 
+    if (movies === null) { return false }
+    if (visibleMovies >= movies.length) { return false } 
     else { return true }
-  }, [films, visibleMovies]);
+  }, [movies, visibleMovies]);
 
-
+  function getSavedMovieCard(savedMovies, card) {
+    return savedMovies.find((savedMovies) => savedMovies.movieId === card.id);
+  }
 
   return (
     <section className="cards">
       <div className="movies-cards">
-      {films.map((movie, amount) => {
+      {movies.map((movie, amount) => {
         if (amount < visibleMovies) {
           return (
-          <MoviesCard key={movie.id ?? movie.movieId}
-                      onCardDelete={onCardDelete}
-                      savedMovies={savedMovies}
-                      onCardSave={onCardSave} movie={movie}/>
-        )}
-        return null;
-      })} 
+          <MoviesCard key={movie.id ?? movie.movieId} isLiked={getSavedMovieCard(savedMovies, movie)}
+                      onCardDelete={onCardDelete} isSaved={isSaved}
+                      savedMovies={savedMovies} handleLikeClick={handleLike}
+                      onCardSave={onCardSave} movie={movie}/>)}
+          return null;
+        })
+      } 
       </div>
-      {handleButtonHidden && location.pathname !== '/saved-movies' && (
+      {handleButtonHidden && (
       <button className="button movies-cards__button" type="button" 
               onClick={showMoreMovies}>Еще
       </button>

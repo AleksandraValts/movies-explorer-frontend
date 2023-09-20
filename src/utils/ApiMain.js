@@ -18,9 +18,10 @@ class ApiMain {
         'content-type': 'application/json',
         authorization: `Bearer ${localStorage.getItem('jwt')}`,
       },
-     // body: JSON.stringify(data),
+      body: JSON.stringify(data),
     }).then((res) => this._checkResponse(res));
   }
+
 
   changeUserInfo(data) {
     return fetch(`${this._url}/users/me`, {
@@ -36,14 +37,27 @@ class ApiMain {
     }).then((res) => this._checkResponse(res));
   }
 
-  saveMovie(data) {
+  saveMovie(movie) {
     return fetch(`${this._url}/movies`, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
         authorization: `Bearer ${localStorage.getItem('jwt')}`,
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        movieId: movie.id,
+        nameRU: movie.nameRU,
+        image: 'https://api.nomoreparties.co' + movie.image.url,
+        trailerLink: movie.trailerLink,
+        duration: movie.duration,
+        country: movie.country,
+        director: movie.director,
+        year: movie.year,
+        description: movie.description,
+        thumbnail: 'https://api.nomoreparties.co' + movie.image.formats.thumbnail.url,
+        owner: movie.owner,
+        nameEN: movie.nameEN,
+      }),
     }).then((res) => this._checkResponse(res));
   };
 
@@ -68,7 +82,7 @@ class ApiMain {
 };
 
 const apiMain = new ApiMain({
-url: 'https://api.valts.movies.nomoredomainsicu.ru',
+url: 'http://localhost:3000',
 headers: {
   'content-type': 'application/json',
   authorization: `Bearer ${localStorage.getItem('jwt')}`,

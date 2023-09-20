@@ -19,13 +19,10 @@ function Login(props) {
  // }
 
  function handleSubmit(e) {
-  e.preventDefault();
-  const { email, password } = values;
-  props.onLogin({ email, password });
-}
-
-console.log(props.text)
-console.log(props.error)
+    e.preventDefault();
+    const { email, password } = values;
+    props.onLogin({ email, password });
+  }
 
   return (
     <section className="login">

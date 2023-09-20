@@ -5,8 +5,7 @@ function FilterCheckbox({ isChecked, onChange }) {
     <div className="checkbox">
     <div className="checkbox__container">
       <label className="checkbox__switch" htmlFor="checkbox">
-        <input type="checkbox" id="checkbox"
-               onChange={onChange} checked={isChecked}/>
+        <input type="checkbox" id="checkbox" onChange={onChange} checked={isChecked}/>
         <span className="checkbox__slider checkbox__round"></span> 
       </label>
     </div>
