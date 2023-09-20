@@ -18,7 +18,7 @@ class ApiMain {
         'content-type': 'application/json',
         authorization: `Bearer ${localStorage.getItem('jwt')}`,
       },
-      body: JSON.stringify(data),
+     // body: JSON.stringify(data),
     }).then((res) => this._checkResponse(res));
   }
 
@@ -82,7 +82,7 @@ class ApiMain {
 };
 
 const apiMain = new ApiMain({
-url: 'http://localhost:3000',
+url: 'https://api.valts.movies.nomoredomainsicu.ru',
 headers: {
   'content-type': 'application/json',
   authorization: `Bearer ${localStorage.getItem('jwt')}`,

@@ -10,3 +10,4 @@
 
 
 Backend проекта https://api.valts.movies.nomoredomainsicu.ru/
+Frontend проекта https://valts.movies.nomoredomainsicu.ru/
