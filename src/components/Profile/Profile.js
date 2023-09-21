@@ -4,10 +4,10 @@ import apiMain from '../../utils/ApiMain.js';
 import {CONFLICT, SERVER_ERROR, PROFILE_ERROR} from '../../utils/errors.js'
 
 function Profile({ handleExit, currentUser }) {
-  const [name, setName] = React.useState(currentUser.name);
-  const [lastName, setLastName] = React.useState(currentUser.name);
-  const [email, setEmail] = React.useState(currentUser.email);
-  const [lastEmail, setLastEmail] = React.useState(currentUser.email);
+  const [name, setName] = React.useState(currentUser.data.name);
+  const [lastName, setLastName] = React.useState(currentUser.data.name);
+  const [email, setEmail] = React.useState(currentUser.data.email);
+  const [lastEmail, setLastEmail] = React.useState(currentUser.data.email);
   const [isVisibleButton, setVisibleButton] = React.useState(false);
   const [isButton, setButton] = React.useState(false);
   const [error, setError] = React.useState(false);

@@ -29,16 +29,13 @@ function App() {
       .then((res) => {
         setLoggedIn(true);
         setCurrentUser(res);
-        localStorage.removeItem('films');
       })
       .then(() => {navigate(location.pathname)})
       .catch((err) => { console.log(err)});
     }
   }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => {handleTokenCheck()}, [])
-
 
   function handleRegNewUser({email, password, name}) {
     return apiAuth
