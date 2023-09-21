@@ -10,21 +10,28 @@ import {EMPTY_SEARCH, CONNECTION_ERROR} from '../../utils/errors.js'
 function Movies({onCardSave, savedMovies, onCardDelete}) {
   const [films, setMovies] = React.useState([]);
   const [error, setError] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState(false); 
+  const [isLoading, setIsLoading] = React.useState(false);
+  const handleSearchFilter = React.useCallback((movies, item, short) => {
+    if (!movies) { return null}
+    return movies.filter((movie) =>
+      (short ? movie.duration <= 40 : movie) &&
+      (movie.nameRU.toLowerCase().includes(item.toLowerCase()) ||
+       movie.nameEN.toLowerCase().includes(item.toLowerCase()))
+    );
+  }, []);
 
   function handleSearch(item, shorts) {
     setIsLoading(true)
     const films =  JSON.parse(localStorage.getItem('films'));
     if (!films) {
-      getMovies()
-        .then((film) => {
-          localStorage.setItem('films', JSON.stringify(film));
-          handleFilter(item, shorts);
-        })
-        .catch(() => {
-          setIsLoading(false)
-          setError(CONNECTION_ERROR);
-        });
+      getMovies().then((film) => {
+        localStorage.setItem('films', JSON.stringify(film));
+        handleFilter(item, shorts);
+      })
+      .catch(() => {
+        setIsLoading(false)
+        setError(CONNECTION_ERROR);
+      });
     } else { handleFilter(item, shorts)}
   };
   
@@ -33,26 +40,12 @@ function Movies({onCardSave, savedMovies, onCardDelete}) {
     const localFilms = JSON.parse(localStorage.getItem('films'));
     const filtered = handleSearchFilter(localFilms, item, shorts);
     if (filtered.length === 0) {
-      setIsLoading(false)
+      setIsLoading(false);
       setError(EMPTY_SEARCH);
     }
     setMovies(filtered);
     setIsLoading(false)
   };
-
-  function handleSearchFilter(films, item, short) {
-    if (!films) { return []}
-    let filtered = [...films];
-    if (item) {
-      filtered = filtered.filter((film) =>
-      film.nameRU.toLowerCase().includes(item.toLowerCase()) ||
-      film.nameEN.toLowerCase().includes(item.toLowerCase()))
-    }
-    if (short) {
-      return filtered.filter((film) => film.duration <= 40);
-    }
-    return filtered;
-  }
 
   return (
     <main className="movies">

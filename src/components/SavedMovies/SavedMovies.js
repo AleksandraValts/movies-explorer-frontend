@@ -11,38 +11,29 @@ function SavedMovies({onCardDelete, savedMovies}) {
   const [loading, setLoading] = React.useState(false); 
   const [films, setFilms] = React.useState(savedMovies);
   const [error, setError] = React.useState('');
+  const handleSearchFilter = React.useCallback((movies, item, short) => {
+    if (!movies) { return null}
+    return movies.filter((movie) =>
+      (short ? movie.duration <= 40 : movie) &&
+      (movie.nameRU.toLowerCase().includes(item.toLowerCase()) ||
+       movie.nameEN.toLowerCase().includes(item.toLowerCase()))
+    );
+  }, []);
   
   React.useEffect(() => {
       apiMain.getSavedMovies()
         .then((movies) => setFilms(movies.reverse()))
-       .catch(() => { setError(CONNECTION_ERROR)})
+        .catch(() => { setError(CONNECTION_ERROR) })
   }, [savedMovies]);
 
   function handleSearch (item, shorts) {
     setError('')
     setLoading(true);
     const filtered = handleSearchFilter(savedMovies, item, shorts);
-    if (filtered.length === 0) {
-      setError(EMPTY_SEARCH);
-    }
+    if (filtered.length === 0) { setError(EMPTY_SEARCH) }
     setFilms(filtered);
     setLoading(false);
   };
-
-  function handleSearchFilter(films, item, short) {
-    if (!films) { return []}
-    let filtered = [...films];
-    console.log(filtered)
-    if (item) {
-      filtered = filtered.filter((film) => 
-        film.nameRU.toLowerCase().includes(item.toLowerCase()) ||
-        film.nameEN.toLowerCase().includes(item.toLowerCase()))
-    }
-    if (short) {
-      return filtered.filter((film) => film.duration <= 40);
-    }
-    return filtered;
-  }
 
   return (
     <main className="movies">
