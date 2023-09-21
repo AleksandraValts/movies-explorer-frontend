@@ -1,0 +1,13 @@
+.log__button {
+    margin-top: 20px;
+}
+
+.login__input_last_log {
+    margin-bottom: 172px;
+}
+
+@media screen and (max-width: 450px) {
+    .log__button {
+        margin-top: 292px;
+    }
+}

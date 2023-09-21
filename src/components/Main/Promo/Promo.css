@@ -1,0 +1,136 @@
+.promo {
+    background-color: rgba(7, 48, 66, 1);
+    display: flex;
+    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -1px;
+    max-width: 1280px;
+}
+
+.promo__about {
+    padding-bottom: 75px;
+    margin-left: 70px;
+}
+
+.promo__header {
+    margin: 0;
+    padding-top: 75px;
+    max-width: 640px;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 50px;
+    line-height: 58px; 
+}
+
+.promo__text {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 13px;
+    line-height: 15.73px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    padding-top: 36px;
+    padding-bottom: 146px;
+    max-width: 310px;
+}
+
+.promo__button {
+    font-weight: 500;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid rgba(255, 255, 255, 1);
+    max-width: 129px;
+    border-radius: 3px;
+    margin: 0;
+}
+
+.promo__link {
+    color: rgba(255, 255, 255, 1);
+    text-decoration: none;
+}
+
+.promo__img {
+    max-width: 310px;
+    height: 304px;
+    margin-bottom: 195px;
+    margin-top: 75px;
+    margin-right: 70px;
+}
+
+@media screen and (max-width: 768px) {
+    .promo {
+        max-width: 768px;
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+    .promo__img {
+        margin: 140px 0 48px 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .promo__about {
+        margin-left: 0;
+    }
+
+    .promo__header {
+        padding-top: 0;
+        max-width: 680px;
+        font-size: 40px;
+        line-height: 50px;
+        text-align: center;
+    }
+
+    .promo__text {
+        padding-top: 22px;
+        padding-bottom: 92px;
+        max-width: 260px;
+        text-align: center;
+        padding-right: 0;
+        margin: 0 auto 0 auto;
+    }
+
+    .promo__button {
+        margin: 0 auto 0 auto;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .promo__header {
+        max-width: 430px;
+        font-size: 30px;
+        line-height: 38px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .promo__img {
+        max-width: 210px;
+        height: 206px;
+        margin-bottom: 44px;
+        margin-top: 70px;
+    }
+
+    .promo__header {
+        max-width: 310px;
+        font-size: 30px;
+        line-height: 38px;
+        letter-spacing: -0.04em;
+    }
+
+    .promo__text {
+        padding-top: 24px;
+        padding-bottom: 80px;
+    }
+
+    .promo__about {
+        padding-bottom: 30px;
+    }
+
+}
