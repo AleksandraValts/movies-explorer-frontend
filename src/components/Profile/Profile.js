@@ -4,10 +4,10 @@ import apiMain from '../../utils/ApiMain.js';
 import {CONFLICT, SERVER_ERROR, PROFILE_ERROR} from '../../utils/errors.js'
 
 function Profile({ handleExit, currentUser }) {
-  const [name, setName] = React.useState(currentUser.data.name);
-  const [lastName, setLastName] = React.useState(currentUser.data.name);
-  const [email, setEmail] = React.useState(currentUser.data.email);
-  const [lastEmail, setLastEmail] = React.useState(currentUser.data.email);
+  const [name, setName] = React.useState(currentUser.name);
+  const [lastName, setLastName] = React.useState(currentUser.name);
+  const [email, setEmail] = React.useState(currentUser.email);
+  const [lastEmail, setLastEmail] = React.useState(currentUser.email);
   const [isVisibleButton, setVisibleButton] = React.useState(false);
   const [isButton, setButton] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -15,8 +15,6 @@ function Profile({ handleExit, currentUser }) {
   const [values, setValues] = React.useState({});
   const [errors, setErrors] = React.useState({});
   const [isValid, setIsValid] = React.useState(false);
-
-  console.log(currentUser.data.name)
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -75,10 +73,9 @@ function Profile({ handleExit, currentUser }) {
         
         <div className="profile__container">
             <label className="profile__item">Имя</label>
-            <input id="name"
+            <input id="name" pattern='^(!\s)[A-Za-zА-Яа-я\s]+$' type="text"
               className={ errors.name ? 'profile__item profile__input' : 'profile__item profile__input'}
-              name="name" type="text" value={name} placeholder="Имя"
-              minLength={2} maxLength={40} 
+              name="name" value={name} placeholder="Имя" minLength={2} maxLength={40} 
               onChange={handleNameChange} disabled={isVisibleButton ? false : true}/>
         </div>
         <span className="profile__input-error">{errors.name}</span>
@@ -86,7 +83,7 @@ function Profile({ handleExit, currentUser }) {
         <div className="profile__container">
             <label className="profile__item">E-mail</label>
             <input className={ errors.name ? 'profile__item profile__input' : 'profile__item profile__input'}
-             id="email" name="email" type="email" value={email} 
+             id="email" name="email" type="email" value={email} pattern='^.+@.+\..+$'
             onChange={handleEmailChange} disabled={isVisibleButton ? false : true}/>
         </div>
         <span className="profile__input-error profile__input-error_email">{errors.email}</span>

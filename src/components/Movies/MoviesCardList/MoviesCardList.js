@@ -4,24 +4,24 @@ import MoviesCard from '../MoviesCard/MoviesCard.js';
 
 function MoviesCardList({isSaved, onCardSave, onCardDelete, savedMovies, handleLike, movies}) {
   const [visibleMovies, setVisibleMovies] = React.useState([]); // 
-  const [step, setStep] = React.useState(0);
+  const [line, setLine] = React.useState(0);
   
   function setMoviesRules() {
     const width = window.innerWidth;
     if (width <= 500) {
       setVisibleMovies(5);
-      setStep(2);
+      setLine(2);
     } else if (width <= 1276) {
       setVisibleMovies(8);
-      setStep(2);
+      setLine(2);
     } else {
       setVisibleMovies(12);
-      setStep(3);
+      setLine(3);
     }
   };
 
   function showMoreMovies() {
-    setVisibleMovies(visibleMovies+step);
+    setVisibleMovies(visibleMovies + line);
   };
   
   React.useEffect(() => {

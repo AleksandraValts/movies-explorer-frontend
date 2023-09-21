@@ -34,15 +34,15 @@ function SavedMovies({onCardDelete, savedMovies}) {
     let filtered = [...films];
     console.log(filtered)
     if (item) {
-      filtered = filtered.filter((film) => film.nameRU
-        .toLowerCase().includes(item.toLowerCase()));
+      filtered = filtered.filter((film) => 
+        film.nameRU.toLowerCase().includes(item.toLowerCase()) ||
+        film.nameEN.toLowerCase().includes(item.toLowerCase()))
     }
     if (short) {
       return filtered.filter((film) => film.duration <= 40);
     }
     return filtered;
   }
-  
 
   return (
     <main className="movies">

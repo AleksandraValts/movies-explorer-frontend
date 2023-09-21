@@ -33,7 +33,7 @@ function Login(props) {
         <h2 className="login__title">Рады видеть!</h2>
         
         <span className="login__plaseholder">E-mail</span>
-        <input  type="email" name="email" id="login-email"
+        <input  type="email" name="email" id="login-email" pattern='^.+@.+\..+$'
         className={ errors.email ? 'login__input login__input-active' : 'login__input'}
         required placeholder="Email" onChange={handleChange}/>
         <span className="login__error-active">{errors.email}</span>

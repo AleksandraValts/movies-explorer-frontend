@@ -11,7 +11,6 @@ import ProtectedRoute from '../../contexts/ProtectedRoute.js';
 import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
 import * as apiAuth from '../../utils/ApiAuth.js';
 import apiMain from '../../utils/ApiMain.js';
-import Preloader from '../Movies/Preloader/Preloader.js';
 import {CONFLICT, SERVER_ERROR, REG_ERROR, AUTH_ERROR} from '../../utils/errors.js'
 
 function App() {
@@ -22,7 +21,6 @@ function App() {
   const [error, setError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState({text: ''});
   const [savedMovies, setSavedMovies] = React.useState([]);
-  //const [isLoading, setIsLoading] = React.useState(false);
 
   function handleTokenCheck() {
     const jwt = localStorage.getItem('jwt');
@@ -31,13 +29,16 @@ function App() {
       .then((res) => {
         setLoggedIn(true);
         setCurrentUser(res);
+        localStorage.removeItem('films');
       })
       .then(() => {navigate(location.pathname)})
       .catch((err) => { console.log(err)});
     }
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => {handleTokenCheck()}, [])
+
 
   function handleRegNewUser({email, password, name}) {
     return apiAuth
@@ -138,6 +139,7 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
+      
         <Routes>
           <Route>
             <Route path="/" element={<Main loggedIn={loggedIn}/>}/>
@@ -158,6 +160,7 @@ function App() {
                  element={<Register onRegister={handleRegNewUser}
                  error={error} text={errorMessage.text}/>}/>
           <Route path="/signin" 
+          
                  element={<Login onLogin={handleLoginUser}
                  error={error} text={errorMessage.text}/>}/>
           <Route path="*" element={<NotFound/>}/>   
