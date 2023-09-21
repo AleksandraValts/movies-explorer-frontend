@@ -14,9 +14,9 @@ function SearchForm({ handleSearch }) {
       const shorts = JSON.parse(localStorage.getItem('shorts'));
       if (item) { setInput(item)}
       if (shorts) { setShortFilm(shorts)}
-      if (item || shorts === true) { handleSearch(item, shorts);
-}
+      if (item || shorts === true) { handleSearch(item, shorts)}
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSubmit(evt) {
