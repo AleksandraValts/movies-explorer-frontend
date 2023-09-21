@@ -73,7 +73,7 @@ function Profile({ handleExit, currentUser }) {
         
         <div className="profile__container">
             <label className="profile__item">Имя</label>
-            <input id="name" pattern='^(!\s)[A-Za-zА-Яа-я\s]+$' type="text"
+            <input id="name" pattern='^(?!\s)[A-Za-zА-Яа-я\-\s]+$' type="text"
               className={ errors.name ? 'profile__item profile__input' : 'profile__item profile__input'}
               name="name" value={name} placeholder="Имя" minLength={2} maxLength={40} 
               onChange={handleNameChange} disabled={isVisibleButton ? false : true}/>
