@@ -12,4 +12,4 @@
 Backend проекта https://api.valts.movies.nomoredomainsicu.ru/
 Frontend проекта https://valts.movies.nomoredomainsicu.ru/
 
-Ссылка на пул-реквест: https://github.com/AleksandraValts/movies-explorer-frontend/compare/main...level-3
+Ссылка на пул-реквест: https://github.com/AleksandraValts/movies-explorer-frontend/pull/2
