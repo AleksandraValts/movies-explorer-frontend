@@ -2,7 +2,6 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard.js';
 
-
 function MoviesCardList({onCardSave, onCardDelete, savedMovies, movies}) {
   const [visibleMovies, setVisibleMovies] = React.useState(0);
   const [line, setLine] = React.useState(0);
@@ -21,7 +20,6 @@ function MoviesCardList({onCardSave, onCardDelete, savedMovies, movies}) {
       setLine(3);
     }
   };
-
 
   function showMoreMovies() {
     setVisibleMovies(visibleMovies + line);
@@ -45,7 +43,7 @@ function MoviesCardList({onCardSave, onCardDelete, savedMovies, movies}) {
       <div className="movies-cards">
         {movies.map((movie) => { return (
           <MoviesCard key={movie.id ?? movie.movieId} onCardSave={onCardSave}
-                      onCardDelete={onCardDelete} savedMovies={savedMovies} movie={movie} />)})} 
+          onCardDelete={onCardDelete} savedMovies={savedMovies} movie={movie} />)})} 
       </div>
       )}
       {movies.length > visibleMovies && location.pathname !== '/saved-movies' && (

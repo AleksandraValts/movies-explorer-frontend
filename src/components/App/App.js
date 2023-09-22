@@ -39,6 +39,7 @@ function App() {
   React.useEffect(() => {handleTokenCheck()}, [])
 
   function handleRegNewUser({email, password, name}) {
+    setError(false);
     return apiAuth
        .register(email, password, name)
        .then((res) => {
@@ -64,6 +65,7 @@ function App() {
   }
 
   function handleLoginUser({email, password}) {
+    setError(false);
     apiAuth.authorise(email, password)
       .then((data) => {
        // if(!data) { return }
