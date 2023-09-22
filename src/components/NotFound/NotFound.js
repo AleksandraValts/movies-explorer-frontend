@@ -5,6 +5,10 @@ function NotFound() {
 
   const navigate = useNavigate();
 	const goBack = () => {
+  //  event.preventDefault()
+  //  event.stopPropagation()
+  
+    console.log('cj')
 		navigate(-1);
 	}
 

@@ -3,48 +3,53 @@ import SearchForm from '../Movies/SearchForm/SearchForm.js';
 import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList.js';
 import Footer from '../Footer/Footer.js';
 import Header from '../Header/Header.js';
-import apiMain from '../../utils/ApiMain.js';
-import Preloader from '../Movies/Preloader/Preloader.js';
-import {EMPTY_SEARCH, CONNECTION_ERROR} from '../../utils/errors.js'
+import {EMPTY_SEARCH} from '../../utils/errors.js'
 
 function SavedMovies({onCardDelete, savedMovies}) {
-  const [loading, setLoading] = React.useState(false); 
   const [films, setFilms] = React.useState(savedMovies);
   const [error, setError] = React.useState('');
-  const handleSearchFilter = React.useCallback((movies, item, short) => {
-    if (!movies) { return null}
-    return movies.filter((movie) =>
-      (short ? movie.duration <= 40 : movie) &&
-      (movie.nameRU.toLowerCase().includes(item.toLowerCase()) ||
-       movie.nameEN.toLowerCase().includes(item.toLowerCase()))
-    );
-  }, []);
-  
-  React.useEffect(() => {
-      apiMain.getSavedMovies()
-        .then((movies) => setFilms(movies.reverse()))
-        .catch(() => { setError(CONNECTION_ERROR) })
-  }, [savedMovies]);
+  const [shorts, setShorts] = React.useState(false);
+  const [item, setItem] = React.useState('');
 
-  function handleSearch (item, shorts) {
-    setError('')
-    setLoading(true);
-    const filtered = handleSearchFilter(savedMovies, item, shorts);
-    if (filtered.length === 0) { setError(EMPTY_SEARCH) }
-    setFilms(filtered);
-    setLoading(false);
-  };
+  const filterShorts = (movies) =>{return movies.filter((movie) => movie.duration < 40)}
+  const filterMovies = (movies, item) => {
+    const filtered = movies.filter((movie) =>
+        movie.nameRU.toLowerCase().includes(item.toLowerCase()) ||
+        movie.nameEN.toLowerCase().includes(item.toLowerCase())
+    );
+    return filtered;
+  }
+
+  React.useEffect(() => {
+    setError('');
+    const filtered = filterMovies(savedMovies, item, shorts);
+    if (filtered.length === 0) { setError(EMPTY_SEARCH) };
+    setFilms(shorts ? filterShorts(filtered) : filtered);
+  }, [savedMovies, shorts, item]);
+  
+ // function handleSearch (item, shorts) {
+ //   setError('')
+ //   setLoading(true);
+ //   const filtered = handleSearchFilter(savedMovies, item, shorts);
+ //   if (filtered.length === 0) { setError(EMPTY_SEARCH) }
+  //  setFilms(filtered);
+ // };
+
+  function handleSearch(item) { 
+    setError('');
+    setItem(item) 
+  }
+  
+  function handleShorts() { 
+    setError('');
+    setShorts(!shorts) 
+  }
 
   return (
     <main className="movies">
         <Header visibility={"none"}/>
-        <SearchForm  handleSearch={handleSearch} />
-        
-        {loading ? ( <Preloader />) : (
-        <MoviesCardList  movies={films} isSaved={true} savedMovies={savedMovies}
-                        onCardDelete={onCardDelete} />
-        )}
-
+        <SearchForm  handleSearch={handleSearch} filter={handleShorts} shorts={shorts}/>
+        <MoviesCardList movies={films} savedMovies={savedMovies} onCardDelete={onCardDelete}/>
         <p className='movies__error'>{error}</p>
         <Footer/>
     </main>

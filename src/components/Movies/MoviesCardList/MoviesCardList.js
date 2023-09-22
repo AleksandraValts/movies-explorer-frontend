@@ -1,10 +1,12 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard.js';
 
 
-function MoviesCardList({isSaved, onCardSave, onCardDelete, savedMovies, handleLike, movies}) {
-  const [visibleMovies, setVisibleMovies] = React.useState([]); // 
+function MoviesCardList({onCardSave, onCardDelete, savedMovies, movies}) {
+  const [visibleMovies, setVisibleMovies] = React.useState(0);
   const [line, setLine] = React.useState(0);
+  const location = useLocation();
   
   function setMoviesRules() {
     const width = window.innerWidth;
@@ -20,44 +22,33 @@ function MoviesCardList({isSaved, onCardSave, onCardDelete, savedMovies, handleL
     }
   };
 
+
   function showMoreMovies() {
     setVisibleMovies(visibleMovies + line);
   };
-  
+
+  React.useEffect(() => { setMoviesRules(movies)}, [movies]);
   React.useEffect(() => {
-    setMoviesRules();
-    window.addEventListener("resize", () => {
-      setTimeout(() => {
-        setMoviesRules();
-      }, 200);
-    });
-  }, []);
-
-  const handleButtonHidden = React.useMemo(() => {
-    if (movies === null) { return false }
-    if (visibleMovies >= movies.length) { return false } 
-    else { return true }
-  }, [movies, visibleMovies]);
-
-  function getSavedMovieCard(savedMovies, card) {
-    return savedMovies.find((savedMovies) => savedMovies.movieId === card.id);
-  }
+    setTimeout(() => { window.addEventListener('resize', setMoviesRules)}, 200);
+  });
 
   return (
     <section className="cards">
+      {location.pathname !== '/saved-movies' ? (
       <div className="movies-cards">
-      {movies.map((movie, amount) => {
-        if (amount < visibleMovies) {
-          return (
-          <MoviesCard key={movie.id ?? movie.movieId} isLiked={getSavedMovieCard(savedMovies, movie)}
-                      onCardDelete={onCardDelete} isSaved={isSaved}
-                      savedMovies={savedMovies} handleLikeClick={handleLike}
-                      onCardSave={onCardSave} movie={movie}/>)}
-          return null;
-        })
-      } 
+        {movies.map((movie, amount) => { if (amount < visibleMovies) {
+            return ( <MoviesCard key={movie.id ?? movie.movieId} onCardSave={onCardSave}
+                    onCardDelete={onCardDelete} savedMovies={savedMovies} movie={movie} />)}
+            return null })}
+      </div> 
+      ) : (
+      <div className="movies-cards">
+        {movies.map((movie) => { return (
+          <MoviesCard key={movie.id ?? movie.movieId} onCardSave={onCardSave}
+                      onCardDelete={onCardDelete} savedMovies={savedMovies} movie={movie} />)})} 
       </div>
-      {handleButtonHidden && (
+      )}
+      {movies.length > visibleMovies && location.pathname !== '/saved-movies' && (
       <button className="button movies-cards__button" type="button" 
               onClick={showMoreMovies}>Еще
       </button>

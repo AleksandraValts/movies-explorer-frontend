@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, useNavigate, useLocation, } from 'react-router-dom';
+import { Route, Routes, useNavigate, useLocation, Navigate} from 'react-router-dom';
 import Main from '../Main/Main.js';
 import Movies from '../Movies/Movies.js';
 import SavedMovies from '../SavedMovies/SavedMovies.js';
@@ -44,7 +44,8 @@ function App() {
        .then((res) => {
          if (res) {
           setErrorMessage({text:''})
-          navigate('/signin')}
+          handleLoginUser({email, password})
+          navigate('/movies')}
        })
        .catch((err) => {
         console.log(err);
@@ -90,7 +91,7 @@ function App() {
     localStorage.clear();
     setCurrentUser({});
     setLoggedIn(false);
-    navigate('/signin');
+    navigate('/');
   }
 
   React.useEffect(() => {
@@ -103,7 +104,7 @@ function App() {
 
       apiMain.getSavedMovies()
         .then((movies) => {
-          setSavedMovies(movies.reverse())
+          setSavedMovies(movies)
         })
         .catch((err) => {console.log(err)});
     }
@@ -137,7 +138,6 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      
         <Routes>
           <Route>
             <Route path="/" element={<Main loggedIn={loggedIn}/>}/>
@@ -154,13 +154,12 @@ function App() {
                    loggedIn={loggedIn} currentUser={currentUser}
                    handleExit={handleExit} onExit={handleExit}/>}/>
           </Route>
-          <Route path="/signup"
-                 element={<Register onRegister={handleRegNewUser}
-                 error={error} text={errorMessage.text}/>}/>
-          <Route path="/signin" 
-          
-                 element={<Login onLogin={handleLoginUser}
-                 error={error} text={errorMessage.text}/>}/>
+          <Route path="/signup" element={ !loggedIn 
+                ? <Register onRegister={handleRegNewUser} error={error} text={errorMessage.text}/> 
+                : <Navigate to="/movies" />} />    
+          <Route path="/signin" element={ !loggedIn 
+                ? <Login onLogin={handleLoginUser} error={error} text={errorMessage.text}/> 
+                : <Navigate to="/movies" />} />
           <Route path="*" element={<NotFound/>}/>   
         </Routes>
    
@@ -169,4 +168,5 @@ function App() {
 }
 
 export default App;
+
 

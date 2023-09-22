@@ -8,55 +8,91 @@ import Preloader from '../Movies/Preloader/Preloader.js';
 import {EMPTY_SEARCH, CONNECTION_ERROR} from '../../utils/errors.js'
 
 function Movies({onCardSave, savedMovies, onCardDelete}) {
-  const [films, setMovies] = React.useState([]);
-  const [error, setError] = React.useState('');
+  const [films, setFilms] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
-  const handleSearchFilter = React.useCallback((movies, item, short) => {
-    if (!movies) { return null}
-    return movies.filter((movie) =>
-      (short ? movie.duration <= 40 : movie) &&
-      (movie.nameRU.toLowerCase().includes(item.toLowerCase()) ||
-       movie.nameEN.toLowerCase().includes(item.toLowerCase()))
+  const [error, setError] = React.useState('');
+  const [shorts, setShorts] = React.useState(false);
+  const [filtered, setFiltered] = React.useState([]);
+ 
+  const filterShorts = (movies) =>{return movies.filter((movie) => movie.duration < 40)}
+  const filterMovies = (movies, item) => {
+    const filtered = movies.filter((movie) =>
+        movie.nameRU.toLowerCase().includes(item.toLowerCase()) ||
+        movie.nameEN.toLowerCase().includes(item.toLowerCase())
     );
-  }, []);
+    return filtered;
+  }
 
-  function handleSearch(item, shorts) {
-    setIsLoading(true)
-    const films =  JSON.parse(localStorage.getItem('films'));
-    if (!films) {
-      getMovies().then((film) => {
-        localStorage.setItem('films', JSON.stringify(film));
-        handleFilter(item, shorts);
-      })
-      .catch(() => {
-        setIsLoading(false)
-        setError(CONNECTION_ERROR);
-      });
-    } else { handleFilter(item, shorts)}
-  };
+  React.useEffect(() => {
+    const filtered = JSON.parse(localStorage.getItem('filtered'));
+    const short = localStorage.getItem('short') === 'true';
+    setFilms(filtered || []);
+    setFiltered(shorts ? filterShorts(filtered) : filtered || []);
+    setShorts(short);
+  }, [shorts]);
+
+  React.useEffect(() => {
+    setError('');
+    const movie = localStorage.getItem('searched');
+    if (filtered.length === 0 && movie) {setError(EMPTY_SEARCH)};
+  }, [filtered]);
+
+  //React.useEffect(() => {
+  //  const filtered = filterMovies(savedMovies, item, shorts);
+ //   if (filtered.length === 0) { setError(EMPTY_SEARCH) };
+ //   setFilms(shorts ? filterShorts(filtered) : filtered);
+ // }, [savedMovies, shorts, item]);
+
+  function handleFilter(movies, query, short) {
+    setError('');
+    const filtered = filterMovies(movies, query, short);
+    setFilms(filtered);
+    setFiltered(short ? filterShorts(filtered) : filtered);
+    localStorage.setItem('filtered', JSON.stringify(filtered));
+    localStorage.setItem('films', JSON.stringify(movies));
+  }
+
+  function handleShorts() {
+    setError('');
+    const filtered = !shorts;
+    localStorage.setItem('short', filtered);
+    setShorts(filtered);
+    setFiltered(filtered ? filterShorts(films) : films);
+  }
   
-  function handleFilter(item, shorts) {
-    setError('')
-    const localFilms = JSON.parse(localStorage.getItem('films'));
-    const filtered = handleSearchFilter(localFilms, item, shorts);
-    if (filtered.length === 0) {
-      setIsLoading(false);
-      setError(EMPTY_SEARCH);
+  function handleSearch(movie) {
+    setError('');
+    const films = JSON.parse(localStorage.getItem('films'));
+    localStorage.setItem('searched', movie);
+    if (films) { handleFilter(films, movie, shorts) } 
+    else {
+      setIsLoading(true);
+      getMovies()
+      .then((data) => { handleFilter(data, movie, shorts) })
+      .catch(() => { setError(CONNECTION_ERROR) })
+      .finally(() => { setIsLoading(false) });
     }
-    setMovies(filtered);
-    setIsLoading(false)
-  };
+  }
+
+ //  function handleSearch(item, shorts) {
+ // const films =  JSON.parse(localStorage.getItem('films'));
+ // if (!films) {
+  //  getMovies().then((film) => {
+   //   localStorage.setItem('films', JSON.stringify(film));
+  //    handleFilter(item, shorts);
+   // })
+   // .catch(() => { setError(CONNECTION_ERROR) });
+   // .finally(() => { setIsLoading(false) });
+//};
 
   return (
     <main className="movies">
         <Header visibility={"none"}/>
-        <SearchForm handleSearch={handleSearch}/>
-        
+        <SearchForm handleSearch={handleSearch} filter={handleShorts} shorts={shorts}/>
         {isLoading ? (<Preloader />) : (
-        <MoviesCardList movies={films} error={error}
+        <MoviesCardList movies={filtered} error={error}
                         onCardSave={onCardSave} onCardDelete={onCardDelete}
-                        savedMovies={savedMovies} />)
-        }         
+                        savedMovies={savedMovies} />)}         
         <p className='movies__error'>{error}</p>            
         <Footer/>
     </main>

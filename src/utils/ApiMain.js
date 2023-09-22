@@ -82,6 +82,7 @@ class ApiMain {
 };
 
 const apiMain = new ApiMain({
+//url: 'http://localhost:3000',
 url: 'https://api.valts.movies.nomoredomainsicu.ru',
 headers: {
   'content-type': 'application/json',

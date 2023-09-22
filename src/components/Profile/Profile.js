@@ -15,6 +15,7 @@ function Profile({ handleExit, currentUser }) {
   const [values, setValues] = React.useState({});
   const [errors, setErrors] = React.useState({});
   const [isValid, setIsValid] = React.useState(false);
+  const [isOk, setIsOk] = React.useState('');
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -25,6 +26,7 @@ function Profile({ handleExit, currentUser }) {
       setErrorMessage('')
       setLastName(name);
       setLastEmail(email);
+      setIsOk('Данные успешно обновлены');
     })
     .catch((err) => {
       console.log(err);
@@ -44,8 +46,8 @@ function Profile({ handleExit, currentUser }) {
     setErrors({ ...errors, [name]: target.validationMessage });
     setIsValid(target.closest('form').checkValidity());
     setName(value);
-    if (value !== lastName) { setButton(true)} 
-    else { setButton(false)}
+  //  if (value !== lastName) { setButton(true)} 
+  //  else { setButton(false)}
   }
 
   function handleEmailChange(evt) {
@@ -56,13 +58,16 @@ function Profile({ handleExit, currentUser }) {
     setErrors({ ...errors, [name]: target.validationMessage });
     setIsValid(target.closest('form').checkValidity());
     setEmail(value);
-    if (value !== lastEmail) { setButton(true)} 
-    else { setButton(false)}
+  //  if (value !== lastEmail) { setButton(true)} 
+  //  else { setButton(false)}
   }
 
   function showSaveBtn() {
+    setIsOk('')
     setVisibleButton(true);
   }
+  
+  const isButtonAble = isValid && (values.name !== lastName || values.email !== lastEmail);
 
   return (
     <div className="app">
@@ -89,6 +94,7 @@ function Profile({ handleExit, currentUser }) {
         <span className="profile__input-error profile__input-error_email">{errors.email}</span>
         
         <span className={!error ? "profile__error" : "profile__error"}>{errorMessage}</span>
+        <span className={!isOk ? "profile__ok" : "profile__ok"}>{isOk}</span>
       </div>
       
       {isVisibleButton
@@ -96,9 +102,9 @@ function Profile({ handleExit, currentUser }) {
       (<div className="profile__save profile__save_none">
         <span className="profile__span">При обновлении произошла ошибка</span>
         <button className={
-                !isValid  ? "profile__button-save_none profile__button-save button profile__button-save_disabled" 
+                !isButtonAble  ? "profile__button-save_none profile__button-save button profile__button-save_disabled" 
                           : "profile__button-save_none profile__button-save button"}
-                type="submit" disabled={(!isButton) && (!isValid ? true : false)}>Сохранить</button>
+                type="submit" disabled={(!isButton) && (!isButtonAble ? true : false)}>Сохранить</button>
       </div>)
       : 
       (<div className="profile__buttons">

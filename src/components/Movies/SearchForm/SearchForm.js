@@ -2,21 +2,14 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
 
-function SearchForm({ handleSearch }) {
+function SearchForm({handleSearch, filter, shorts}) {
   const [input, setInput] = React.useState('');
   const { pathname } = useLocation();
-  const [shortFilm, setShortFilm] = React.useState(false);
   const [error, setError] = React.useState(false);
 
   React.useEffect(() => {
-    if (pathname === '/movies') {
-      const item = localStorage.getItem('item');
-      const shorts = JSON.parse(localStorage.getItem('shorts'));
-      if (item) { setInput(item)}
-      if (shorts) { setShortFilm(shorts)}
-      if (item || shorts === true) { handleSearch(item, shorts)}
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    const movie = localStorage.getItem('searched');
+    if (pathname === '/movies' && movie) { setInput(movie) }
   }, []);
 
   function handleSubmit(evt) {
@@ -27,21 +20,12 @@ function SearchForm({ handleSearch }) {
       return;
     }
     setError(false);
-    localStorage.setItem('item', input);
-    handleSearch(input, shortFilm);
-  };
-
-  function handeleInput (evt) {
+    handleSearch(input);
+  }
+  
+  function handleInput(evt) {
     setInput(evt.target.value);
-  };
-
-  function handleFilterCheckbox () {
-    setShortFilm(!shortFilm);
-    handleSearch(input, !shortFilm);
-    if (pathname === '/movies') {
-      localStorage.setItem('shorts', !shortFilm);
-    }
-  };
+  }
 
   return (
     <section className="search" aria-label="Поиск">
@@ -50,7 +34,7 @@ function SearchForm({ handleSearch }) {
               onSubmit={handleSubmit}  noValidate>
             <input className="search__input" type="text"
                    placeholder="Фильм" required id="search"
-                   onChange={handeleInput} name="search"/>
+                   onChange={handleInput} value={input}  name="search"/>
             <button className="search__button button" type="submit" 
                     aria-label="Поиск">Поиск
             </button>
@@ -64,7 +48,7 @@ function SearchForm({ handleSearch }) {
             </span>
             )}        
         </form>
-        <FilterCheckbox value={shortFilm} onChange={handleFilterCheckbox} />
+        <FilterCheckbox filter={filter} shorts={shorts} />
       </div>
     </section>
   );

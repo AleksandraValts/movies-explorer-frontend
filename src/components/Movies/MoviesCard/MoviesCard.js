@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-function MoviesCard({ onCardSave, onCardDelete, movie, isLiked }) {
+function MoviesCard({ onCardSave, onCardDelete, movie, savedMovies }) {
 
   function convertMinutes(min) {
     const hours = Math.floor(min / 60);
@@ -10,7 +10,7 @@ function MoviesCard({ onCardSave, onCardDelete, movie, isLiked }) {
   }
 
   let { pathname } = useLocation();
- // const isLiked = savedMovies ? savedMovies.some(c => c.movieId === movie.id) : false;
+  const isLiked = savedMovies ? savedMovies.some(c => c.movieId === movie.id) : false;
 
   const handleLikeClick = () => {
     onCardSave(movie);  
