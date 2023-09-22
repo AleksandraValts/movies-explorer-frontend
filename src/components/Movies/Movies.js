@@ -6,6 +6,7 @@ import Header from '../Header/Header.js';
 import { getMovies } from '../../utils/ApiMovies.js';
 import Preloader from '../Movies/Preloader/Preloader.js';
 import {EMPTY_SEARCH, CONNECTION_ERROR} from '../../utils/errors.js'
+import {SHORT_TIME} from '../../utils/films.js'
 
 function Movies({onCardSave, savedMovies, onCardDelete}) {
   const [films, setFilms] = React.useState([]);
@@ -14,7 +15,7 @@ function Movies({onCardSave, savedMovies, onCardDelete}) {
   const [shorts, setShorts] = React.useState(false);
   const [filtered, setFiltered] = React.useState([]);
  
-  const filterShorts = (movies) =>{return movies.filter((movie) => movie.duration < 40)}
+  const filterShorts = (movies) =>{return movies.filter((movie) => movie.duration < SHORT_TIME)}
   const filterMovies = (movies, item) => {
     const filtered = movies.filter((movie) =>
         movie.nameRU.toLowerCase().includes(item.toLowerCase()) ||

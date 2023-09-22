@@ -4,6 +4,7 @@ import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList.js';
 import Footer from '../Footer/Footer.js';
 import Header from '../Header/Header.js';
 import {EMPTY_SEARCH} from '../../utils/errors.js'
+import {SHORT_TIME} from '../../utils/films.js'
 
 function SavedMovies({onCardDelete, savedMovies}) {
   const [films, setFilms] = React.useState(savedMovies);
@@ -11,7 +12,7 @@ function SavedMovies({onCardDelete, savedMovies}) {
   const [shorts, setShorts] = React.useState(false);
   const [item, setItem] = React.useState('');
 
-  const filterShorts = (movies) =>{return movies.filter((movie) => movie.duration < 40)}
+  const filterShorts = (movies) =>{return movies.filter((movie) => movie.duration < SHORT_TIME)}
   const filterMovies = (movies, item) => {
     const filtered = movies.filter((movie) =>
         movie.nameRU.toLowerCase().includes(item.toLowerCase()) ||

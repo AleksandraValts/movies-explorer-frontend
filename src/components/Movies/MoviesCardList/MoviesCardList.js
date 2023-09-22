@@ -1,6 +1,8 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard.js';
+import { SMALL_SCREEN, MIDDLE_SCREEN, SMALL_LINE, BIG_LINE, BIG_VISIBLE,
+        MIDDLE_VISIBLE, SMALL_VISIBLE } from '../../../utils/films.js'
 
 function MoviesCardList({onCardSave, onCardDelete, savedMovies, movies}) {
   const [visibleMovies, setVisibleMovies] = React.useState(0);
@@ -9,15 +11,15 @@ function MoviesCardList({onCardSave, onCardDelete, savedMovies, movies}) {
   
   function setMoviesRules() {
     const width = window.innerWidth;
-    if (width <= 500) {
-      setVisibleMovies(5);
-      setLine(2);
-    } else if (width <= 1276) {
-      setVisibleMovies(8);
-      setLine(2);
+    if (width <= SMALL_SCREEN) {
+      setVisibleMovies(SMALL_VISIBLE);
+      setLine(SMALL_LINE);
+    } else if (width <= MIDDLE_SCREEN) {
+      setVisibleMovies(MIDDLE_VISIBLE);
+      setLine(SMALL_LINE);
     } else {
-      setVisibleMovies(12);
-      setLine(3);
+      setVisibleMovies(BIG_VISIBLE);
+      setLine(BIG_LINE);
     }
   };
 
